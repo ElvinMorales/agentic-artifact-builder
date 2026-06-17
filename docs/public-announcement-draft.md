@@ -24,7 +24,7 @@ The examples are public-safe by design: synthetic, generic, and free of private 
 
 Live demo: `https://elvinmorales.github.io/agentic-artifact-builder/`
 
-Release notes: `TODO: add v0.1.0 release URL`
+Release notes: `https://github.com/ElvinMorales/agentic-artifact-builder/releases/tag/v0.1.0`
 
 Source: `https://github.com/ElvinMorales/agentic-artifact-builder`
 
