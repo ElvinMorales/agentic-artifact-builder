@@ -1,0 +1,29 @@
+tools:
+  -
+    name: "synthetic-template-lookup"
+    description: "Find a matching public-safe starter template from a local example collection."
+    input_schema:
+      artifact-id:
+        description: "Catalog artifact id"
+      audience:
+        description: "Learner audience label"
+      format:
+        description: "markdown | yaml | json"
+    output_schema:
+      status: "success | error"
+      result: "Synthetic tool result or public-safe metadata."
+    side_effects:
+      - "No external writes in this starter spec."
+    permissions:
+      - "Read public local template metadata"
+      - "Return synthetic examples only"
+      - "Avoid network, account, or filesystem write side effects in this starter spec"
+    approval_required: "Required before adding network, filesystem, account, or irreversible side effects."
+    failure_modes:
+      - "Unknown artifact id"
+      - "No matching public template"
+      - "Template metadata lacks safety notes"
+    safety_notes:
+      - "Use synthetic, generic examples only."
+      - "Do not include secrets, private data, proprietary workflows, regulated data, unsanitized logs, real traces, or production state."
+      - "Use placeholder endpoints and synthetic parameter examples."

@@ -1,0 +1,16 @@
+resources:
+  -
+    id: "public-documentation-learning-notes"
+    title: "Public Documentation Learning Notes"
+    type: "Static reference collection"
+    uri: "public-or-local-placeholder://resource"
+    owner: "Public example maintainer"
+    priority: "supporting"
+    allowed_use: "Use as background material for generic documentation examples, renderer checks, and beginner explanations."
+    freshness_policy: "Review when the catalog or rendering strategy changes."
+    access_notes: "Stored as public Markdown examples. Do not add private repositories, private URLs, account ids, credentials, or internal document names."
+    license_or_usage_notes: "Use only public-safe material with clear reuse permission."
+    public_safety_notes:
+      - "Use synthetic, generic examples only."
+      - "Do not include secrets, private data, proprietary workflows, regulated data, unsanitized logs, real traces, or production state."
+      - "Do not reference private repositories, internal documents, or private data sources."
