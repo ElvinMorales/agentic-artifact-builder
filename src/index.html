@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Agentic Artifact Builder</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="header-copy">
+        <p class="eyebrow">Taxonomy-backed educational builder</p>
+        <h1>Agentic Artifact Builder</h1>
+        <p>
+          Browse artifact types, learn where they fit in the 14-bucket taxonomy,
+          and generate public-safe starter Markdown for agentic AI system design.
+        </p>
+      </div>
+      <nav class="header-links" aria-label="Project references">
+        <a href="https://github.com/ElvinMorales/agentic-artifact-builder/blob/main/docs/taxonomy-alignment.md">Taxonomy alignment</a>
+        <a href="https://github.com/ElvinMorales/agentic-ai-artifact-taxonomy">Source taxonomy</a>
+      </nav>
+    </header>
+
+    <main class="app-shell">
+      <section class="panel picker-panel" aria-labelledby="picker-heading">
+        <div class="panel-header">
+          <p class="eyebrow">Browse</p>
+          <h2 id="picker-heading">Artifact types</h2>
+        </div>
+        <div id="artifact-picker" class="artifact-picker"></div>
+      </section>
+
+      <section class="panel learning-panel" aria-labelledby="learning-heading">
+        <div class="panel-header">
+          <p class="eyebrow">Learn</p>
+          <h2 id="learning-heading">Selected artifact</h2>
+        </div>
+        <div id="learning-content" class="learning-content"></div>
+      </section>
+
+      <section class="panel builder-panel" aria-labelledby="builder-heading">
+        <div class="panel-header builder-header">
+          <div>
+            <p class="eyebrow">Build</p>
+            <h2 id="builder-heading">Guided starter</h2>
+          </div>
+          <div class="control-row" aria-label="Generated artifact controls">
+            <button type="button" id="load-example">Load example</button>
+            <button type="button" id="reset-form">Reset</button>
+            <button type="button" id="copy-markdown">Copy Markdown</button>
+            <button type="button" id="download-markdown">Download .md</button>
+          </div>
+        </div>
+
+        <div class="builder-grid">
+          <form id="artifact-form" class="artifact-form"></form>
+          <section class="preview-panel" aria-labelledby="preview-heading">
+            <div class="preview-heading-row">
+              <h3 id="preview-heading">Generated Markdown</h3>
+              <p id="control-status" class="control-status" role="status" aria-live="polite"></p>
+            </div>
+            <textarea id="markdown-preview" class="markdown-preview" readonly spellcheck="false"></textarea>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>

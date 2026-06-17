@@ -54,6 +54,20 @@ The first usable version should include:
 
 `SKILL.md` is one artifact type for capability modules. It is not the whole product.
 
+## Run Locally
+
+The first app shell is a static browser app with no framework or build step. From the repository root, run:
+
+```bash
+python -m http.server 8000 -d src
+```
+
+Then open:
+
+```text
+http://localhost:8000
+```
+
 ## Artifact Coverage
 
 Over time, the builder should help generate starter artifacts such as:
