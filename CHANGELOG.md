@@ -16,4 +16,6 @@ First MVP milestone for the public Agentic Artifact Builder.
 - Renderer and catalog validation tests.
 - GitHub Actions validation workflow for syntax and test checks.
 - GitHub Pages publishing guidance and a minimal Pages workflow that deploys `src/`.
+- Successful GitHub Pages deployment for the static MVP.
+- `v0.1.0` release packet documentation and public announcement draft.
 - Contributing guide, pull request template, and issue templates for public collaboration.
