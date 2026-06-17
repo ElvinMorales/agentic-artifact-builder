@@ -2,7 +2,7 @@
 
 ## Why Forms Stay Catalog-Driven
 
-The builder uses `src/data/artifactCatalog.js` as the UI contract. Artifact entries define the canonical taxonomy bucket, lifecycle stage, learning notes, fields, public-safety notes, and related artifacts. This keeps the picker, learning panel, and form rendering aligned to the stable 14-bucket taxonomy without creating a second product model.
+The builder uses `src/data/artifactCatalog.js` as the UI contract. Artifact entries define the canonical taxonomy bucket, lifecycle stage, learning notes, fields, public-safety notes, and related artifacts. Lifecycle stages use the controlled values documented in [artifact-lifecycle.md](artifact-lifecycle.md). This keeps the picker, learning panel, and form rendering aligned to the stable 14-bucket taxonomy without creating a second product model.
 
 ## Why Renderers Are Layered On Top
 

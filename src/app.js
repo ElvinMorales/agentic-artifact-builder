@@ -25,6 +25,26 @@ const fieldValuesByArtifact = new Map();
 let selectedArtifactId = artifactCatalog[0]?.id;
 let statusTimer;
 
+const lifecycleStageDetails = {
+  "design-time": {
+    label: "Design-time",
+    description:
+      "Defines intended structure, policy, prompts, schemas, reusable templates, and other decisions that guide implementation.",
+  },
+  runtime: {
+    label: "Runtime",
+    description:
+      "Describes execution posture, operational configuration, resumable state, plans, or handoffs without publishing live runtime data.",
+    warning:
+      "Runtime templates and configs are okay. Do not commit unsanitized live sessions, traces, logs, private state snapshots, secrets, or workspace snapshots.",
+  },
+  iteration: {
+    label: "Iteration",
+    description:
+      "Captures evaluation results, feedback, release notes, versioning, lessons learned, and improvement loops.",
+  },
+};
+
 renderApp();
 
 pickerElement.addEventListener("click", (event) => {
@@ -141,8 +161,9 @@ function renderLearningPanel() {
     createElement("p", artifact.description, "summary-text"),
     createMetaList([
       ["Canonical bucket", bucket?.name || artifact.bucket],
-      ["Lifecycle stage", artifact.lifecycleStage],
+      ["Lifecycle stage", getLifecycleStageLabel(artifact.lifecycleStage)],
     ]),
+    createLifecycleStageBlock(artifact.lifecycleStage),
     createInfoBlock("Example filenames", artifact.exampleFilenames),
     createInfoBlock("Learning goals", artifact.learningGoals),
     createInfoBlock("Public-safety notes", artifact.publicSafetyNotes),
@@ -257,6 +278,26 @@ function createInfoBlock(title, items) {
   return block;
 }
 
+function createLifecycleStageBlock(stage) {
+  const detail = lifecycleStageDetails[stage] || {
+    label: stage,
+    description: "Lifecycle stage guidance is not available for this artifact.",
+  };
+  const block = document.createElement("section");
+  block.className = "lifecycle-block";
+
+  block.append(
+    createElement("h4", `${detail.label} stage`),
+    createElement("p", detail.description)
+  );
+
+  if (detail.warning) {
+    block.append(createElement("p", detail.warning, "runtime-warning"));
+  }
+
+  return block;
+}
+
 function createElement(tagName, text, className = "") {
   const element = document.createElement(tagName);
   element.textContent = text;
@@ -266,6 +307,10 @@ function createElement(tagName, text, className = "") {
   }
 
   return element;
+}
+
+function getLifecycleStageLabel(stage) {
+  return lifecycleStageDetails[stage]?.label || stage;
 }
 
 function getCurrentValues() {

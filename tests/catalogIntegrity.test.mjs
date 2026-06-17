@@ -31,8 +31,16 @@ const allowedFieldTypes = new Set([
   "key-value-list",
   "select",
 ]);
+const expectedLifecycleStages = ["design-time", "runtime", "iteration"];
+const runtimeSafetyPattern =
+  /runtime|live|trace|log|state snapshot|workspace snapshot|secret/i;
 
 assert.equal(taxonomyBuckets.length, 14, "catalog must preserve the stable 14 taxonomy buckets");
+assert.deepEqual(
+  lifecycleStages,
+  expectedLifecycleStages,
+  "lifecycle stages must stay on the documented three-stage learner model"
+);
 
 const bucketIds = taxonomyBuckets.map((bucket) => bucket.id);
 assert.equal(new Set(bucketIds).size, bucketIds.length, "taxonomy bucket IDs must be unique");
@@ -68,6 +76,13 @@ for (const artifact of artifactCatalog) {
   assert.ok(artifact.learningGoals.length > 0, `${artifact.id} must include learning goals`);
   assert.ok(artifact.fields.length > 0, `${artifact.id} must define UI fields`);
   assert.ok(artifact.publicSafetyNotes.length > 0, `${artifact.id} must include safety notes`);
+  if (artifact.lifecycleStage === "runtime") {
+    assert.match(
+      artifact.publicSafetyNotes.join(" "),
+      runtimeSafetyPattern,
+      `${artifact.id} runtime artifacts must warn against publishing unsafe runtime data`
+    );
+  }
   assert.ok(Array.isArray(artifact.relatedArtifacts), `${artifact.id} relatedArtifacts must be an array`);
 
   const fieldIds = artifact.fields.map((field) => field.id);

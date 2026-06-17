@@ -8,6 +8,16 @@ This example is a fully synthetic agent artifact bundle generated from the curre
 
 The generated files are in `generated/`.
 
+## Lifecycle Stages Demonstrated
+
+The same files also show the builder's three lifecycle stages:
+
+- Design-time artifacts define intended structure, policy, prompts, schemas, memory rules, and reusable templates.
+- Runtime artifacts describe safe execution posture, state strategy, plans, handoffs, and placeholder configuration without publishing live runtime data.
+- Iteration artifacts capture evaluation criteria, review findings, changelog notes, and improvement loops.
+
+See [artifact lifecycle stages](../../docs/artifact-lifecycle.md) for the controlled stage values.
+
 ## What This Is Not
 
 This is not a production agent, deployment guide, security approval, compliance review, memory store, runtime trace, or private workflow template. It does not access private systems, publish content, call external tools, or guarantee safe behavior in a real deployment.
@@ -38,6 +48,8 @@ Start with `AGENT.yaml` for identity and scope, then read `persona.md` and `prin
 `PROMPT.md` and `INTERFACE.md` describe model-facing instructions and interaction contracts. `MEMORY.md` defines durable preference policy, while `state-strategy.md` defines current session and workflow state. These are intentionally separate.
 
 `PLAN.md` and `HANDOFFS.md` describe visible coordination and transfer of work. `GUARDRAILS.md` defines approval and safety boundaries. `OUTPUT.md` describes the generated output contract, `eval-rubric.md` describes review criteria, `RUNTIME.md` describes non-secret runtime assumptions, and `CHANGELOG.md` records iteration notes.
+
+Runtime files in this example are templates only. They must not be replaced in the public repository with unsanitized live sessions, traces, logs, private state snapshots, secrets, private memory stores, or workspace snapshots.
 
 ## Why The Examples Are Synthetic
 

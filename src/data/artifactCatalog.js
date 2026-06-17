@@ -26,9 +26,7 @@ export const taxonomyBuckets = [
 
 export const lifecycleStages = [
   "design-time",
-  "build-time",
   "runtime",
-  "evaluation",
   "iteration",
 ];
 
@@ -36,6 +34,9 @@ const commonSafetyNotes = [
   "Use synthetic, generic examples only.",
   "Do not include secrets, private data, proprietary workflows, regulated data, unsanitized logs, real traces, or production state.",
 ];
+
+const runtimeSafetyNote =
+  "Runtime templates and configuration examples are okay, but do not publish unsanitized live sessions, traces, logs, private state snapshots, secrets, or workspace snapshots.";
 
 export const artifactCatalog = [
   {
@@ -112,7 +113,7 @@ export const artifactCatalog = [
     name: "Skill module",
     description:
       "Defines a reusable capability, when it should be used, required inputs, steps, and expected outputs.",
-    lifecycleStage: "build-time",
+    lifecycleStage: "design-time",
     exampleFilenames: ["SKILL.md", "skills/research/SKILL.md"],
     learningGoals: [
       "Model a capability as a reusable module.",
@@ -135,7 +136,7 @@ export const artifactCatalog = [
     name: "Tool spec",
     description:
       "Defines callable tool surfaces, parameters, permissions, failure modes, and safety constraints.",
-    lifecycleStage: "build-time",
+    lifecycleStage: "design-time",
     exampleFilenames: ["tools.yaml", "tool-spec.md"],
     learningGoals: [
       "Describe tool capabilities without exposing private endpoints.",
@@ -210,7 +211,7 @@ export const artifactCatalog = [
     name: "Interface schema",
     description:
       "Defines the interaction contract between a user, agent, tool, service, or another system.",
-    lifecycleStage: "build-time",
+    lifecycleStage: "design-time",
     exampleFilenames: ["INTERFACE.md", "interface.schema.json"],
     learningGoals: [
       "Describe interaction boundaries separately from prompts.",
@@ -279,6 +280,7 @@ export const artifactCatalog = [
     publicSafetyNotes: [
       ...commonSafetyNotes,
       "Use synthetic state examples only; never include production state snapshots.",
+      runtimeSafetyNote,
     ],
     relatedArtifacts: ["memory-policy", "plan-record", "runtime-config"],
   },
@@ -302,7 +304,10 @@ export const artifactCatalog = [
       { id: "assumptions", label: "Assumptions", type: "list", required: false },
       { id: "status", label: "Status", type: "select", required: false },
     ],
-    publicSafetyNotes: commonSafetyNotes,
+    publicSafetyNotes: [
+      ...commonSafetyNotes,
+      runtimeSafetyNote,
+    ],
     relatedArtifacts: ["handoff-contract", "state-strategy", "iteration-changelog-note"],
   },
   {
@@ -328,6 +333,7 @@ export const artifactCatalog = [
     publicSafetyNotes: [
       ...commonSafetyNotes,
       "Do not include real customer, employee, ticket, or incident details.",
+      runtimeSafetyNote,
     ],
     relatedArtifacts: ["plan-record", "state-strategy", "interface-schema"],
   },
@@ -360,7 +366,7 @@ export const artifactCatalog = [
     name: "Output schema",
     description:
       "Defines the structure, required fields, constraints, and examples for generated outputs.",
-    lifecycleStage: "build-time",
+    lifecycleStage: "design-time",
     exampleFilenames: ["output.schema.json", "OUTPUT.md"],
     learningGoals: [
       "Make generated outputs predictable.",
@@ -386,7 +392,7 @@ export const artifactCatalog = [
     name: "Eval rubric",
     description:
       "Defines criteria, scoring guidance, test cases, and observation points for assessing agent behavior or outputs.",
-    lifecycleStage: "evaluation",
+    lifecycleStage: "iteration",
     exampleFilenames: ["eval-rubric.md", "eval-cases.yaml", "trace.schema.json"],
     learningGoals: [
       "Define quality before optimizing behavior.",
@@ -429,6 +435,7 @@ export const artifactCatalog = [
     publicSafetyNotes: [
       ...commonSafetyNotes,
       "Use placeholders for endpoints, credentials, regions, and account identifiers.",
+      runtimeSafetyNote,
     ],
     relatedArtifacts: ["agent-manifest", "tool-spec", "state-strategy"],
   },

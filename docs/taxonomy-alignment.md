@@ -64,11 +64,13 @@ State artifacts define the current or resumable condition of a process, task, se
 
 ## Design-Time, Runtime, And Iteration Boundaries
 
-Design-time artifacts describe intended structure, policy, interfaces, and evaluation criteria before or during implementation.
+The builder documents lifecycle stages in [artifact-lifecycle.md](artifact-lifecycle.md). Lifecycle stages help learners understand when an artifact is usually created or used; they do not add taxonomy buckets.
 
-Runtime artifacts describe configuration, execution environment, live behavior boundaries, or operational records.
+Design-time artifacts describe intended structure, policy, prompts, interfaces, schemas, memory rules, and reusable templates before or during implementation.
 
-Iteration artifacts describe what changed, why it changed, what was learned, and what should be improved next.
+Runtime artifacts describe safe execution posture, configuration, resumable state, plans, or handoffs. Public examples may use templates and placeholders, but they must not include unsanitized live runtime data.
+
+Iteration artifacts describe evaluation, observability review, what changed, why it changed, what was learned, and what should be improved next.
 
 Do not collapse these into one artifact. A generated example may link them together, but the catalog and UI should keep their roles distinct.
 
