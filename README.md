@@ -113,4 +113,4 @@ Early static MVP shell.
 
 The repo now includes a catalog-driven static builder that lets users select taxonomy artifact types, read learning guidance, fill generated fields, preview generated starter artifacts, load synthetic examples, reset values, copy output, and download starter files.
 
-The first artifact-specific renderers cover identity, operating style, capability, tool, resource, prompt, interface, memory, state, plan, and handoff starter files. The next phase is expanding renderer coverage for guardrails, outputs, evaluation, runtime, and iteration artifacts.
+The artifact-specific renderers now cover the current catalog: identity, operating style, capability, tool, resource, prompt, interface, memory, state, plan, handoff, guardrails, output schema, evaluation rubric, runtime config, and iteration or changelog starter files. The generic fallback renderer remains available for future catalog entries before they receive specialized output.
