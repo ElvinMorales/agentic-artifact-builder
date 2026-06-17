@@ -24,6 +24,11 @@ export const artifactRenderers = {
   "state-strategy": renderStateStrategy,
   "plan-record": renderPlanRecord,
   "handoff-contract": renderHandoffContract,
+  "guardrails-governance-policy": renderGuardrailsGovernancePolicy,
+  "output-schema": renderOutputSchema,
+  "eval-rubric": renderEvalRubric,
+  "runtime-config": renderRuntimeConfig,
+  "iteration-changelog-note": renderIterationChangelogNote,
 };
 
 export const artifactDownloadFilenames = {
@@ -39,6 +44,11 @@ export const artifactDownloadFilenames = {
   "state-strategy": "state-strategy.md",
   "plan-record": "PLAN.md",
   "handoff-contract": "HANDOFFS.md",
+  "guardrails-governance-policy": "GUARDRAILS.md",
+  "output-schema": "OUTPUT.md",
+  "eval-rubric": "eval-rubric.md",
+  "runtime-config": "RUNTIME.md",
+  "iteration-changelog-note": "CHANGELOG.md",
 };
 
 function renderAgentManifest(artifact, values) {
@@ -419,6 +429,222 @@ function renderHandoffContract(artifact, values) {
   return finish(lines);
 }
 
+function renderGuardrailsGovernancePolicy(artifact, values) {
+  const lines = [`# ${artifact.name}`, ""];
+
+  appendMarkdownSection(lines, "Purpose", values.policyScope);
+  appendMarkdownSection(lines, "Safety Goals", [
+    "Make allowed, disallowed, approval, and escalation behavior explicit before implementation.",
+    "Keep governance rules separate from prompts, runtime configuration, and output contracts.",
+    "Support public-safe learning examples without claiming production assurance.",
+  ]);
+  appendMarkdownSection(lines, "Allowed Behavior", splitLines(values.allowedActions));
+  appendMarkdownSection(lines, "Disallowed Behavior", splitLines(values.prohibitedActions));
+  appendMarkdownSection(lines, "Approval Rules", splitLines(values.approvalRules));
+  appendMarkdownSection(lines, "Escalation Rules", [
+    cleanText(values.escalation),
+    "Pause when a request introduces private data, regulated data, credentials, production traces, irreversible actions, or unclear authority.",
+    "Route unclear policy conflicts to an accountable reviewer before continuing.",
+  ]);
+  appendMarkdownSection(lines, "Data Handling Rules", [
+    "Use synthetic, generic examples in public artifacts.",
+    "Do not include secrets, credentials, account ids, private endpoints, regulated data, proprietary workflows, unsanitized logs, or real runtime traces.",
+    "Use placeholders for environment-specific values and explain what a private deployment must review separately.",
+  ]);
+  appendMarkdownSection(lines, "Tool And Action Boundaries", [
+    "Only use tools declared in related tool specs and allowed by the runtime posture.",
+    "Require explicit approval before enabling external writes, account changes, network calls, or irreversible operations.",
+    "Treat protocol mappings as adapters to this policy, not replacements for the taxonomy bucket.",
+  ]);
+  appendMarkdownSection(lines, "Auditability And Review Expectations", [
+    "Record policy changes in an iteration or changelog note.",
+    "Review this policy before publishing examples, adding tool permissions, changing runtime assumptions, or expanding output contracts.",
+    "Use synthetic review notes only; do not paste private logs, traces, transcripts, or incident records.",
+  ]);
+  appendMarkdownSection(lines, "Public-Safety Notes", artifact.publicSafetyNotes);
+  appendMarkdownSection(lines, "Related Artifacts", artifact.relatedArtifacts);
+
+  return finish(lines);
+}
+
+function renderOutputSchema(artifact, values) {
+  const requiredFields = parseKeyValueLines(values.requiredFields);
+  const schemaName = cleanText(values.schemaName, artifact.name);
+  const lines = [`# ${schemaName}`, ""];
+
+  appendMarkdownSection(lines, "Purpose", `${schemaName} defines the generated output contract. It describes required data shape, validation expectations, and failure handling rather than only prose formatting preferences.`);
+  appendMarkdownSection(lines, "Output Contract", [
+    `Preferred format: ${cleanText(values.format, "Markdown")}`,
+    "The renderer, prompt, interface, and evaluation rubric should agree on this contract.",
+    "Adapters may map this contract to JSON, Markdown, YAML, or plain text without changing the taxonomy bucket.",
+  ]);
+  appendMarkdownSection(lines, "Required Fields", formatKeyValueItems(requiredFields));
+  appendMarkdownSection(lines, "Optional Fields", [
+    "related_artifacts: Artifact ids or filenames that the generated output depends on.",
+    "assumptions: Labeled assumptions used to keep the starter output useful and public-safe.",
+    "review_notes: Synthetic reviewer notes for learning and iteration.",
+  ]);
+  appendMarkdownSection(lines, "Validation Expectations", [
+    "Required fields must be present and non-empty.",
+    "Generated examples must remain synthetic, generic, and public-safe.",
+    "The output must not include secrets, private data, regulated data, production state, raw logs, or real traces.",
+    ...splitLines(values.constraints),
+  ]);
+
+  lines.push("## JSON Schema Example");
+  lines.push("");
+  lines.push("```json");
+  lines.push(JSON.stringify(createOutputJsonSchema(schemaName, requiredFields), null, 2));
+  lines.push("```");
+  lines.push("");
+
+  lines.push("## Example JSON Output");
+  lines.push("");
+  lines.push("```json");
+  lines.push(JSON.stringify(createOutputExample(values, requiredFields), null, 2));
+  lines.push("```");
+  lines.push("");
+
+  appendMarkdownSection(lines, "Failure Handling", [
+    "Return a validation error when required fields are missing or unsafe values are requested.",
+    "Ask for clarification when the requested output contract conflicts with related guardrails or interface expectations.",
+    "Use placeholders instead of real private values when demonstrating the schema publicly.",
+  ]);
+  appendMarkdownSection(lines, "Related Artifacts", artifact.relatedArtifacts);
+
+  return finish(lines);
+}
+
+function renderEvalRubric(artifact, values) {
+  const lines = [`# ${artifact.name}`, ""];
+
+  appendMarkdownSection(lines, "Evaluation Purpose", values.evalGoal);
+  appendMarkdownSection(lines, "Scope", [
+    "Evaluate the selected agent artifact, generated output, or workflow behavior against documented criteria.",
+    "Use synthetic scenarios and public-safe reviewer notes only.",
+    "Keep evaluation criteria distinct from runtime configuration and iteration notes, while linking findings to both when useful.",
+  ]);
+  appendMarkdownSection(lines, "Test Cases Or Scenarios", splitLines(values.testCases));
+  appendMarkdownSection(lines, "Scoring Criteria", splitLines(values.criteria));
+  appendMarkdownSection(lines, "Scoring Guidance", values.scoring);
+  appendMarkdownSection(lines, "Must-Pass Checks", [
+    "The output maps to the correct canonical taxonomy bucket.",
+    "Required fields or contract sections are present.",
+    "Related artifacts are named when the output depends on policy, prompt, schema, runtime, memory, state, plan, or handoff artifacts.",
+    "The example remains synthetic, generic, and free of private or regulated data.",
+  ]);
+  appendMarkdownSection(lines, "Regression Checks", [
+    "Previously covered artifact types still render with their specialized structure.",
+    "The generic fallback still renders unexpected future artifact ids.",
+    "Copy, download, reset, load-example, form editing, and live preview behavior continue to work.",
+  ]);
+  appendMarkdownSection(lines, "Public-Safety Checks", [
+    ...artifact.publicSafetyNotes.filter((note) => !note.startsWith("Do not include real traces")),
+  ]);
+  appendMarkdownSection(lines, "Failure Examples", [
+    "The output invents a new top-level taxonomy bucket.",
+    "A state artifact is described as long-term memory.",
+    "A schema is treated as a loose formatting preference rather than a validation contract.",
+    "A runtime example includes a real credential, private URL, account id, log, or trace.",
+  ]);
+  appendMarkdownSection(lines, "Review Cadence", [
+    cleanText(values.observabilityNotes),
+    "Review the rubric before major renderer changes, new catalog entries, or public release notes.",
+    "Record material evaluation findings in an iteration or changelog note.",
+  ]);
+  appendMarkdownSection(lines, "Related Artifacts", artifact.relatedArtifacts);
+
+  return finish(lines);
+}
+
+function renderRuntimeConfig(artifact, values) {
+  const configuration = parseKeyValueLines(values.configuration);
+  const lines = [`# ${cleanText(values.runtimeName, artifact.name)}`, ""];
+
+  appendMarkdownSection(lines, "Purpose", `${cleanText(values.runtimeName, "Starter runtime")} documents non-secret runtime assumptions, deployment posture, operational limits, and placeholder configuration for ${cleanText(values.environment, "a public-safe example environment")}.`);
+  appendMarkdownSection(lines, "Model And Provider Assumptions", [
+    "Model provider, model name, region, and account details are placeholders in this public starter artifact.",
+    "Prompts, tools, policies, schemas, memory, and state behavior should be declared in their related artifacts.",
+    "Changing providers or model profiles should trigger review of output schemas, eval rubrics, and governance rules.",
+  ]);
+  appendMarkdownSection(lines, "Non-Secret Settings", formatKeyValueItems(configuration));
+
+  lines.push("## Example Runtime Configuration");
+  lines.push("");
+  lines.push("```yaml");
+  lines.push("runtime:");
+  lines.push(`  name: ${JSON.stringify(cleanText(values.runtimeName, "starter-runtime"))}`);
+  lines.push(`  environment: ${JSON.stringify(cleanText(values.environment, "local-example"))}`);
+  lines.push('  model_provider: "provider-placeholder"');
+  lines.push('  model_reference: "model-profile-placeholder"');
+  lines.push("settings:");
+  appendYamlExampleSettings(lines, configuration);
+  lines.push("secret_references:");
+  lines.push('  - name: "EXAMPLE_API_KEY"');
+  lines.push('    source: "environment-variable-placeholder"');
+  lines.push('    required: "only when an approved adapter needs it"');
+  lines.push("```");
+  lines.push("");
+
+  appendMarkdownSection(lines, "Environment Variables And Secret References", [
+    "Use placeholders such as EXAMPLE_API_KEY, EXAMPLE_SERVICE_URL, or EXAMPLE_ACCOUNT_ID.",
+    "Do not commit real credentials, private endpoints, tokens, account ids, or secret manager paths.",
+    "Document which component would read a secret, but keep the actual value outside this public artifact.",
+  ]);
+  appendMarkdownSection(lines, "Tool Availability", [
+    "Only enable tools documented in related tool-spec artifacts.",
+    "Disable external writes and irreversible actions until explicitly approved in governance policy and runtime review.",
+    "Use placeholder adapters for protocol-specific surfaces.",
+  ]);
+  appendMarkdownSection(lines, "Resource Paths", [
+    "Prefer public or local placeholder paths for examples.",
+    "Do not include private repository paths, private buckets, internal URLs, or production storage locations.",
+  ]);
+  appendMarkdownSection(lines, "Timeout And Retry Assumptions", splitLines(values.limits));
+  appendMarkdownSection(lines, "Deployment Posture", [
+    "This starter config describes assumptions, not a production deployment guarantee.",
+    "Review policy, schema, state, memory, and eval artifacts before moving from local learning examples to any private environment.",
+  ]);
+  appendMarkdownSection(lines, "Local Development Notes", splitLines(values.dependencies));
+  appendMarkdownSection(lines, "Public-Safety Notes", artifact.publicSafetyNotes);
+  appendMarkdownSection(lines, "Related Artifacts", artifact.relatedArtifacts);
+
+  return finish(lines);
+}
+
+function renderIterationChangelogNote(artifact, values) {
+  const lines = ["# Changelog", ""];
+
+  appendMarkdownSection(lines, "Version And Date", [
+    "Version: 0.1.0",
+    "Date: YYYY-MM-DD",
+    "Status: starter iteration note for review",
+  ]);
+  appendMarkdownSection(lines, "Summary", values.changeSummary);
+  appendMarkdownSection(lines, "Changed Artifacts", splitLines(values.affectedArtifacts));
+  appendMarkdownSection(lines, "Why It Changed", values.reason);
+  appendMarkdownSection(lines, "Validation Performed", splitLines(values.evidence));
+  appendMarkdownSection(lines, "Migration Notes", [
+    "Review related prompts, schemas, policies, eval rubrics, and runtime assumptions before adapting this change privately.",
+    "No migration of private memory, live state, logs, traces, or production data is represented in this public example.",
+  ]);
+  appendMarkdownSection(lines, "Known Limitations", [
+    "This note records learning and follow-up decisions; it is not runtime state or durable memory.",
+    "Evidence should summarize synthetic checks rather than copy private sessions, traces, logs, or user content.",
+  ]);
+  appendMarkdownSection(lines, "Follow-Up Tasks", splitLines(values.followUps));
+  appendMarkdownSection(lines, "Feedback Signals", [
+    "Evaluation rubric findings.",
+    "Synthetic reviewer notes.",
+    "Public-safe learner feedback.",
+    "Observed gaps in generated starter artifacts.",
+  ]);
+  appendMarkdownSection(lines, "Related Artifacts", artifact.relatedArtifacts);
+  appendMarkdownSection(lines, "Public-Safety Notes", artifact.publicSafetyNotes);
+
+  return finish(lines);
+}
+
 function formatKeyValueItems(entries) {
   if (!entries.length) {
     return [];
@@ -440,6 +666,132 @@ function createExampleRequest(interfaceName, inputs) {
       inputs.map((entry) => [entry.key, `Synthetic ${entry.description.toLowerCase()}`])
     ),
   };
+}
+
+function createOutputJsonSchema(schemaName, requiredFields) {
+  const properties = requiredFields.length
+    ? Object.fromEntries(
+        requiredFields.map((entry, index) => [
+          schemaFieldName(entry, index),
+          createJsonSchemaProperty(entry),
+        ])
+      )
+    : {
+        summary: {
+          type: "string",
+          description: "Synthetic starter output summary.",
+        },
+      };
+
+  return {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    title: schemaName,
+    type: "object",
+    additionalProperties: false,
+    required: Object.keys(properties),
+    properties,
+  };
+}
+
+function createOutputExample(values, requiredFields) {
+  const explicitExample = parseLooseJson(values.exampleOutput);
+
+  if (explicitExample) {
+    return explicitExample;
+  }
+
+  const fields = requiredFields.length
+    ? requiredFields
+    : [{ key: "summary", description: "Synthetic starter output summary." }];
+
+  return Object.fromEntries(
+    fields.map((entry, index) => [
+      schemaFieldName(entry, index),
+      createSyntheticFieldValue(entry),
+    ])
+  );
+}
+
+function createJsonSchemaProperty(entry) {
+  const description = entry.description;
+  const lowered = `${entry.key} ${description}`.toLowerCase();
+
+  if (lowered.includes("list") || lowered.includes("artifacts")) {
+    return {
+      type: "array",
+      description,
+      items: {
+        type: "string",
+      },
+    };
+  }
+
+  if (lowered.includes("count") || lowered.includes("number")) {
+    return {
+      type: "number",
+      description,
+    };
+  }
+
+  if (lowered.includes("flag") || lowered.includes("boolean")) {
+    return {
+      type: "boolean",
+      description,
+    };
+  }
+
+  return {
+    type: "string",
+    description,
+  };
+}
+
+function createSyntheticFieldValue(entry) {
+  const lowered = entry.description.toLowerCase();
+  const detectionText = `${entry.key} ${entry.description}`.toLowerCase();
+
+  if (detectionText.includes("list") || detectionText.includes("artifacts")) {
+    return ["Synthetic example item"];
+  }
+
+  if (detectionText.includes("count") || detectionText.includes("number")) {
+    return 1;
+  }
+
+  if (detectionText.includes("flag") || detectionText.includes("boolean")) {
+    return true;
+  }
+
+  return `Synthetic ${lowered}`;
+}
+
+function schemaFieldName(entry, index) {
+  return slugify(entry.key, `field-${index + 1}`).replace(/-/g, "_");
+}
+
+function parseLooseJson(value) {
+  const cleaned = String(value || "").trim();
+
+  if (!cleaned || !cleaned.startsWith("{")) {
+    return null;
+  }
+
+  try {
+    return JSON.parse(cleaned);
+  } catch (error) {
+    return null;
+  }
+}
+
+function appendYamlExampleSettings(lines, configuration) {
+  if (!configuration.length) {
+    lines.push('  example_setting: "placeholder-value"');
+    return;
+  }
+
+  configuration.forEach((entry, index) => {
+    lines.push(`  ${schemaFieldName(entry, index)}: ${JSON.stringify(entry.description)}`);
+  });
 }
 
 function finish(lines) {
