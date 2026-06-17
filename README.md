@@ -109,4 +109,8 @@ This repository must stay public-safe:
 
 ## Status
 
-Early foundation. The current focus is documentation, taxonomy alignment, and the initial artifact catalog before app UI implementation.
+Early static MVP shell.
+
+The repo now includes a catalog-driven static builder that lets users select taxonomy artifact types, read learning guidance, fill generated fields, preview Markdown, load synthetic examples, reset values, copy output, and download starter artifacts.
+
+The next phase is improving artifact-specific renderers and validation.
