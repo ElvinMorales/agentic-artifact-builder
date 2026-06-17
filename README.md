@@ -4,6 +4,11 @@ An interactive educational builder for creating agentic AI artifacts from a fram
 
 This repository is the public companion project to the [Agentic AI Artifact Taxonomy](https://github.com/ElvinMorales/agentic-ai-artifact-taxonomy). The taxonomy repository is the conceptual source of truth. This repository is the interactive builder layer that helps people learn the taxonomy by selecting artifact types, filling guided fields, and generating clean starter files.
 
+## Live Demo
+
+- Live demo: `https://elvinmorales.github.io/agentic-artifact-builder/`
+- Release notes: [docs/releases/v0.1.0.md](docs/releases/v0.1.0.md)
+
 ## What This Is
 
 Agentic Artifact Builder is a lightweight learning tool for people who want to design, operate, evaluate, and iterate agentic AI systems with clear artifacts instead of scattered notes.
@@ -44,13 +49,15 @@ The MVP is:
 
 > A taxonomy-backed educational artifact builder that helps users learn and generate the main artifact types needed to design, operate, evaluate, and iterate agentic AI systems.
 
-The first usable version should include:
+Version `0.1.0` includes:
 
 - A versioned artifact catalog aligned to the taxonomy repo.
 - A static app shell that lets users browse artifact types by bucket and lifecycle stage.
-- Guided fields for a small set of core artifact types.
+- Guided fields for the current catalog artifact types.
 - Generated starter files with synthetic, generic examples.
 - Short learning notes that explain how each artifact relates to nearby artifacts.
+- Specialized renderers for all current artifact types.
+- Catalog and renderer validation tests.
 
 `SKILL.md` is one artifact type for capability modules. It is not the whole product.
 
@@ -138,7 +145,7 @@ This repository must stay public-safe:
 
 ## Status
 
-Early static MVP shell.
+`v0.1.0` static MVP.
 
 The repo now includes a catalog-driven static builder that lets users select taxonomy artifact types, read learning guidance, fill generated fields, preview generated starter artifacts, load synthetic examples, reset values, copy output, and download starter files.
 
