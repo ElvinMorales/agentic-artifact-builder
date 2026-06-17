@@ -13,7 +13,7 @@
         <h1>Agentic Artifact Builder</h1>
         <p>
           Browse artifact types, learn where they fit in the 14-bucket taxonomy,
-          and generate public-safe starter Markdown for agentic AI system design.
+          and generate public-safe starter files for agentic AI system design.
         </p>
       </div>
       <nav class="header-links" aria-label="Project references">
@@ -48,8 +48,8 @@
           <div class="control-row" aria-label="Generated artifact controls">
             <button type="button" id="load-example">Load example</button>
             <button type="button" id="reset-form">Reset</button>
-            <button type="button" id="copy-markdown">Copy Markdown</button>
-            <button type="button" id="download-markdown">Download .md</button>
+            <button type="button" id="copy-markdown">Copy output</button>
+            <button type="button" id="download-markdown">Download file</button>
           </div>
         </div>
 
@@ -57,7 +57,7 @@
           <form id="artifact-form" class="artifact-form"></form>
           <section class="preview-panel" aria-labelledby="preview-heading">
             <div class="preview-heading-row">
-              <h3 id="preview-heading">Generated Markdown</h3>
+              <h3 id="preview-heading">Generated starter</h3>
               <p id="control-status" class="control-status" role="status" aria-live="polite"></p>
             </div>
             <textarea id="markdown-preview" class="markdown-preview" readonly spellcheck="false"></textarea>
