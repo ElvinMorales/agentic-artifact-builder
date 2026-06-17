@@ -1,0 +1,36 @@
+name: Validate
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Syntax checks
+        run: |
+          node --check src/app.js
+          node --check src/renderers/markdownRenderer.js
+          node --check src/renderers/artifactRenderers.js
+          node --check src/renderers/rendererUtils.js
+          node --check src/examples/exampleValues.js
+          node --check src/data/artifactCatalog.js
+          node --check tests/catalogIntegrity.test.mjs
+          node --check tests/rendererSmoke.test.mjs
+
+      - name: Validation tests
+        run: |
+          node tests/catalogIntegrity.test.mjs
+          node tests/rendererSmoke.test.mjs

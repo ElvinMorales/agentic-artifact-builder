@@ -68,6 +68,29 @@ Then open:
 http://localhost:8000
 ```
 
+## Examples And Validation
+
+The first public-safe example pack lives in `examples/synthetic-docs-assistant/`. It contains renderer-generated starter artifacts for the current catalog and shows how the 17 builder artifact types map back to the stable 14 taxonomy buckets.
+
+Use `docs/public-safety-checklist.md` before committing or publishing generated artifacts. Public examples must stay synthetic and must not include secrets, private data, proprietary workflows, regulated data, private logs, real traces, memory entries, or live state snapshots.
+
+Local validation uses Node built-ins only:
+
+```bash
+node --check src/app.js
+node --check src/renderers/markdownRenderer.js
+node --check src/renderers/artifactRenderers.js
+node --check src/renderers/rendererUtils.js
+node --check src/examples/exampleValues.js
+node --check src/data/artifactCatalog.js
+node --check tests/catalogIntegrity.test.mjs
+node --check tests/rendererSmoke.test.mjs
+node tests/catalogIntegrity.test.mjs
+node tests/rendererSmoke.test.mjs
+```
+
+GitHub Actions runs the same syntax and validation checks on pull requests and pushes to `main` through `.github/workflows/validate.yml`.
+
 ## Artifact Coverage
 
 Over time, the builder should help generate starter artifacts such as:
