@@ -59,14 +59,20 @@ The first usable version should include:
 The first app shell is a static browser app with no framework or build step. From the repository root, run:
 
 ```bash
-python -m http.server 8000 -d src
+python -m http.server 8000 -d src --bind 127.0.0.1
 ```
 
 Then open:
 
 ```text
-http://localhost:8000
+http://127.0.0.1:8000
 ```
+
+## Publishing
+
+The app is served directly from `src/`; no install or build step is required.
+
+For GitHub Pages setup, see [docs/publishing.md](docs/publishing.md). The recommended path uses GitHub Actions to upload `src/` as the static Pages artifact. Branch-based Pages settings commonly support the repository root or `/docs`, so do not assume `/src` can be selected directly in every repository configuration.
 
 ## Examples And Validation
 

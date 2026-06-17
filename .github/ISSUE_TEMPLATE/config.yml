@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Publishing guidance
+    url: https://github.com/ElvinMorales/agentic-artifact-builder/blob/main/docs/publishing.md
+    about: Read how to publish the static app with GitHub Pages.
+  - name: Public-safety checklist
+    url: https://github.com/ElvinMorales/agentic-artifact-builder/blob/main/docs/public-safety-checklist.md
+    about: Review before sharing generated artifacts or examples.
