@@ -1,6 +1,24 @@
-const EMPTY_VALUE = "_Not specified yet._";
+import {
+  artifactDownloadFilenames,
+  artifactRenderers,
+} from "./artifactRenderers.js";
+import {
+  appendKeyValueList,
+  appendList,
+  EMPTY_VALUE,
+  splitLines,
+} from "./rendererUtils.js";
 
 export function renderMarkdownArtifact(artifact, bucket, values = {}) {
+  return renderArtifactMarkdown(artifact, values, bucket);
+}
+
+export function renderArtifactMarkdown(artifact, values = {}, bucket = undefined) {
+  const renderer = artifactRenderers[artifact.id] ?? renderGenericArtifactMarkdown;
+  return renderer(artifact, values, bucket);
+}
+
+export function renderGenericArtifactMarkdown(artifact, values = {}, bucket = undefined) {
   const lines = [];
 
   lines.push(`# ${artifact.name}`);
@@ -38,20 +56,11 @@ export function renderMarkdownArtifact(artifact, bucket, values = {}) {
   lines.push("");
   appendList(lines, artifact.relatedArtifacts);
 
-  if (artifact.id === "skill-module") {
-    lines.push("");
-    lines.push("## Skill module note");
-    lines.push("");
-    lines.push(
-      "This starter can be adapted toward a SKILL.md-style file, while the artifact remains mapped to the Capability modules bucket."
-    );
-  }
-
   return `${lines.join("\n").trim()}\n`;
 }
 
 export function getDownloadFilename(artifact) {
-  return `${artifact.id}.md`;
+  return artifactDownloadFilenames[artifact.id] || `${artifact.id}.md`;
 }
 
 function appendFieldValue(lines, rawValue, type) {
@@ -68,39 +77,9 @@ function appendFieldValue(lines, rawValue, type) {
   }
 
   if (type === "key-value-list") {
-    appendKeyValueList(lines, splitLines(value));
+    appendKeyValueList(lines, value);
     return;
   }
 
   lines.push(value);
-}
-
-function appendList(lines, items = []) {
-  if (!items.length) {
-    lines.push(`- ${EMPTY_VALUE}`);
-    return;
-  }
-
-  items.forEach((item) => {
-    lines.push(`- ${item}`);
-  });
-}
-
-function appendKeyValueList(lines, items) {
-  if (!items.length) {
-    lines.push(`- ${EMPTY_VALUE}`);
-    return;
-  }
-
-  items.forEach((item) => {
-    const cleaned = item.replace(/^-+\s*/, "");
-    lines.push(`- ${cleaned}`);
-  });
-}
-
-function splitLines(value) {
-  return value
-    .split(/\r?\n/)
-    .map((line) => line.trim())
-    .filter(Boolean);
 }

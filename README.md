@@ -111,6 +111,6 @@ This repository must stay public-safe:
 
 Early static MVP shell.
 
-The repo now includes a catalog-driven static builder that lets users select taxonomy artifact types, read learning guidance, fill generated fields, preview Markdown, load synthetic examples, reset values, copy output, and download starter artifacts.
+The repo now includes a catalog-driven static builder that lets users select taxonomy artifact types, read learning guidance, fill generated fields, preview generated starter artifacts, load synthetic examples, reset values, copy output, and download starter files.
 
-The next phase is improving artifact-specific renderers and validation.
+The first artifact-specific renderers cover identity, operating style, capability, tool, resource, prompt, and interface starter files. The next phase is expanding renderer coverage and validation.
