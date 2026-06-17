@@ -539,8 +539,7 @@ function renderEvalRubric(artifact, values) {
     "Copy, download, reset, load-example, form editing, and live preview behavior continue to work.",
   ]);
   appendMarkdownSection(lines, "Public-Safety Checks", [
-    ...artifact.publicSafetyNotes,
-    "Do not include real traces, logs, transcripts, incident records, user memory, production state, credentials, or private endpoints.",
+    ...artifact.publicSafetyNotes.filter((note) => !note.startsWith("Do not include real traces")),
   ]);
   appendMarkdownSection(lines, "Failure Examples", [
     "The output invents a new top-level taxonomy bucket.",
@@ -715,7 +714,7 @@ function createOutputExample(values, requiredFields) {
 
 function createJsonSchemaProperty(entry) {
   const description = entry.description;
-  const lowered = description.toLowerCase();
+  const lowered = `${entry.key} ${description}`.toLowerCase();
 
   if (lowered.includes("list") || lowered.includes("artifacts")) {
     return {
@@ -749,16 +748,17 @@ function createJsonSchemaProperty(entry) {
 
 function createSyntheticFieldValue(entry) {
   const lowered = entry.description.toLowerCase();
+  const detectionText = `${entry.key} ${entry.description}`.toLowerCase();
 
-  if (lowered.includes("list") || lowered.includes("artifacts")) {
+  if (detectionText.includes("list") || detectionText.includes("artifacts")) {
     return ["Synthetic example item"];
   }
 
-  if (lowered.includes("count") || lowered.includes("number")) {
+  if (detectionText.includes("count") || detectionText.includes("number")) {
     return 1;
   }
 
-  if (lowered.includes("flag") || lowered.includes("boolean")) {
+  if (detectionText.includes("flag") || detectionText.includes("boolean")) {
     return true;
   }
 
