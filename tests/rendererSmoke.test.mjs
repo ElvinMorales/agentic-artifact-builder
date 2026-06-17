@@ -54,7 +54,7 @@ const unknownArtifact = {
   bucket: "outputs-and-schemas",
   name: "Future output contract",
   description: "Future artifact used to confirm fallback behavior.",
-  lifecycleStage: "build-time",
+  lifecycleStage: "design-time",
   exampleFilenames: ["future-output-contract.md"],
   fields: [{ id: "purpose", label: "Purpose", type: "textarea", required: true }],
   publicSafetyNotes: ["Use synthetic examples only."],

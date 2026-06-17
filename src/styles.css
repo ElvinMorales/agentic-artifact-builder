@@ -229,6 +229,33 @@ textarea:focus-visible {
   margin: 0.15rem 0 0;
 }
 
+.lifecycle-block {
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  border-radius: 6px;
+  margin: 0 0 1rem;
+  padding: 0.75rem;
+}
+
+.lifecycle-block h4 {
+  font-size: 0.95rem;
+  margin: 0 0 0.35rem;
+}
+
+.lifecycle-block p {
+  color: var(--muted);
+  margin: 0;
+}
+
+.lifecycle-block p + p {
+  margin-top: 0.5rem;
+}
+
+.runtime-warning {
+  color: #7c2d12;
+  font-weight: 700;
+}
+
 .info-block {
   border-top: 1px solid var(--border);
   padding: 0.9rem 0 0;

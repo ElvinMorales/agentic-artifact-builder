@@ -8,6 +8,7 @@ This repository is the public companion project to the [Agentic AI Artifact Taxo
 
 - Live demo: `https://elvinmorales.github.io/agentic-artifact-builder/`
 - Release notes: [docs/releases/v0.1.0.md](docs/releases/v0.1.0.md)
+- Artifact lifecycle stages: [docs/artifact-lifecycle.md](docs/artifact-lifecycle.md)
 
 ## What This Is
 
@@ -42,6 +43,8 @@ The companion taxonomy repository defines the stable 14 top-level buckets:
 14. Learning and iteration
 
 This builder must not create or imply a competing taxonomy. It may provide separate builder flows for sub-surfaces such as prompts, interfaces, plans, and handoffs, but those flows must map back to the canonical 14 buckets.
+
+The builder also labels each artifact with one lifecycle stage: `design-time`, `runtime`, or `iteration`. These stages help learners understand when an artifact is usually created or used; they do not add taxonomy buckets. See [docs/artifact-lifecycle.md](docs/artifact-lifecycle.md).
 
 ## MVP
 

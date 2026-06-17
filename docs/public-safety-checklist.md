@@ -4,6 +4,8 @@ Use this checklist before committing, publishing, or sharing generated artifacts
 
 This checklist is for public repository review. A private deployment needs its own legal, security, privacy, compliance, and operational review.
 
+For the three lifecycle stages used by the builder, see [artifact-lifecycle.md](artifact-lifecycle.md).
+
 ## Safe To Publish?
 
 - [ ] The artifact uses synthetic, generic examples only.
@@ -50,6 +52,8 @@ Use neutral examples that do not resemble real regulated records.
 Do not paste raw logs, stack traces from private systems, model transcripts, incident timelines, telemetry, request payloads, browser captures, observability exports, or production runtime traces.
 
 Summarize synthetic review findings instead. If a test needs sample evidence, create a small public-safe fixture that cannot be mistaken for real operational data.
+
+Runtime templates, placeholder configs, state schemas, plans, and handoff contracts can be public-safe. Unsanitized live sessions, traces, logs, transcripts, private state snapshots, workspace snapshots, secrets, private memory stores, and production runtime data are not public-safe.
 
 ## Memory Entries And State Snapshots
 
