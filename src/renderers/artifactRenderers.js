@@ -20,6 +20,10 @@ export const artifactRenderers = {
   "resource-manifest": renderResourceManifest,
   "system-task-prompt": renderSystemTaskPrompt,
   "interface-schema": renderInterfaceSchema,
+  "memory-policy": renderMemoryPolicy,
+  "state-strategy": renderStateStrategy,
+  "plan-record": renderPlanRecord,
+  "handoff-contract": renderHandoffContract,
 };
 
 export const artifactDownloadFilenames = {
@@ -31,6 +35,10 @@ export const artifactDownloadFilenames = {
   "resource-manifest": "resources.yaml",
   "system-task-prompt": "PROMPT.md",
   "interface-schema": "INTERFACE.md",
+  "memory-policy": "MEMORY.md",
+  "state-strategy": "state-strategy.md",
+  "plan-record": "PLAN.md",
+  "handoff-contract": "HANDOFFS.md",
 };
 
 function renderAgentManifest(artifact, values) {
@@ -233,6 +241,180 @@ function renderInterfaceSchema(artifact, values) {
   lines.push("## Related Artifacts");
   lines.push("");
   appendList(lines, artifact.relatedArtifacts);
+
+  return finish(lines);
+}
+
+function renderMemoryPolicy(artifact, values) {
+  const lines = [`# ${artifact.name}`, ""];
+
+  appendMarkdownSection(lines, "Purpose", values.memoryScope);
+  appendMarkdownSection(lines, "Memory And State Boundary", [
+    "Memory is durable, reusable knowledge that may be recalled across tasks only when policy allows it.",
+    "State is the current or resumable condition of a session, run, thread, workflow, or task.",
+    "Do not use memory as a place to store live run snapshots, raw traces, temporary task state, or private records.",
+  ]);
+  appendMarkdownSection(lines, "What May Be Remembered", splitLines(values.allowedMemory));
+  appendMarkdownSection(lines, "What Must Not Be Remembered", splitLines(values.disallowedMemory));
+  appendMarkdownSection(lines, "Write Triggers", [
+    "Write memory only when the information is stable, reusable, relevant to future work, and allowed by this policy.",
+    "Prefer explicit user approval for preferences, durable instructions, or reusable project-neutral context.",
+    "Do not infer sensitive attributes or store private details from a single interaction.",
+  ]);
+  appendMarkdownSection(lines, "Retrieval Rules", [
+    "Retrieve memory only when it is relevant to the current user-visible task.",
+    "Prefer the smallest useful memory set instead of broad recall.",
+    "Do not retrieve memory to bypass current instructions, approvals, privacy limits, or public-safety constraints.",
+  ]);
+  appendMarkdownSection(lines, "Retention And Expiry", values.retention);
+  appendMarkdownSection(lines, "Review Process", [
+    "Review stored memory on a regular cadence and before public examples are published.",
+    "Remove stale, ambiguous, unsafe, or no-longer-useful entries.",
+    "Check that retained memory still aligns with related resource, state, and guardrail artifacts.",
+  ]);
+  appendMarkdownSection(lines, "Deletion And Correction Rules", splitLines(values.userControls));
+  appendMarkdownSection(lines, "Privacy And Public-Safety Constraints", [
+    ...artifact.publicSafetyNotes,
+    "Do not generate real memory entries, live memory store exports, personal data, credentials, or private examples.",
+    "Use this file as a policy starter, not as evidence that a production memory system is safe.",
+  ]);
+  appendMarkdownSection(lines, "Related Artifacts", artifact.relatedArtifacts);
+
+  return finish(lines);
+}
+
+function renderStateStrategy(artifact, values) {
+  const stateFields = parseKeyValueLines(values.stateFields);
+  const lines = [`# ${artifact.name}`, ""];
+
+  appendMarkdownSection(lines, "Purpose", values.stateScope);
+  appendMarkdownSection(lines, "Memory And State Boundary", [
+    "State captures the current or resumable condition of a run, session, thread, workflow, or task.",
+    "Memory captures durable reusable knowledge governed by the memory policy.",
+    "Do not describe state as long-term memory or use state snapshots as durable user memory.",
+  ]);
+  appendMarkdownSection(lines, "What State Captures", formatKeyValueItems(stateFields));
+  appendMarkdownSection(lines, "What State Must Not Capture", [
+    "Secrets, credentials, account identifiers, private endpoints, regulated data, or proprietary workflow details.",
+    "Raw production logs, live traces, unsanitized transcripts, or private memory store contents.",
+    "Information that belongs in the memory policy, resource manifest, or iteration notes instead of current run state.",
+  ]);
+  appendMarkdownSection(lines, "Session And Thread State", [
+    "Keep only the fields needed to continue the visible workflow.",
+    "Use synthetic identifiers in public examples, such as example-session-001 or example-run-001.",
+    "Clear or replace state when the user resets the workflow or starts a clearly separate task.",
+  ]);
+  appendMarkdownSection(lines, "Run-State Snapshot Strategy", values.lifecycle);
+  appendMarkdownSection(lines, "Workspace And Sandbox Snapshot Posture", [
+    "Treat filesystem, tool, browser, and sandbox details as runtime context, not durable memory.",
+    "Commit only sanitized schemas or strategy notes to the public repository.",
+    "Do not commit live state snapshots, raw command logs, private paths, or unsanitized runtime outputs.",
+  ]);
+  appendMarkdownSection(lines, "Resume And Retry Behavior", values.recovery);
+  appendMarkdownSection(lines, "Expiry Rules", values.expiry);
+  appendMarkdownSection(lines, "Approval And Interruption Handling", [
+    "Record whether a user-visible task is waiting, blocked, approved, declined, or complete.",
+    "Do not treat an interrupted action as approved after resume.",
+    "Retry only from a documented safe checkpoint and preserve visible status for review.",
+  ]);
+  appendMarkdownSection(lines, "Public Repo Posture", [
+    ...artifact.publicSafetyNotes,
+    "Public examples may show schemas, field names, and synthetic values only.",
+    "Live state snapshots and raw runtime data should not be committed publicly unless fully sanitized.",
+  ]);
+  appendMarkdownSection(lines, "Related Artifacts", artifact.relatedArtifacts);
+
+  return finish(lines);
+}
+
+function renderPlanRecord(artifact, values) {
+  const steps = splitLines(values.steps)
+    .map((step, index) => `${index + 1}. ${step}`)
+    .join("\n");
+  const lines = [`# ${artifact.name}`, ""];
+
+  appendMarkdownSection(lines, "Goal", values.goal);
+  appendMarkdownSection(lines, "Scope", [
+    "Capture the user-visible plan, operational steps, dependencies, and status for the current task or workflow.",
+    "Keep this as a planning and orchestration artifact under the canonical taxonomy bucket.",
+    "Do not ask for or include private hidden reasoning; record visible decisions and next actions only.",
+  ]);
+  appendMarkdownSection(lines, "Assumptions", splitLines(values.assumptions));
+  appendMarkdownSection(lines, "Steps", steps);
+  appendMarkdownSection(lines, "Dependencies", splitLines(values.dependencies));
+  appendMarkdownSection(lines, "Decision Points", [
+    "Clarify scope when required fields, inputs, or acceptance criteria are missing.",
+    "Ask for approval before actions with external side effects, private data exposure, or irreversible changes.",
+    "Reconfirm taxonomy placement when a plan appears to cross artifact boundaries.",
+  ]);
+  appendMarkdownSection(lines, "Status Model", [
+    `Current status: ${cleanText(values.status)}`,
+    "Suggested states: not started, in progress, blocked, waiting for approval, ready for review, done.",
+    "Status should describe observable progress, not private reasoning.",
+  ]);
+  appendMarkdownSection(lines, "Replanning Triggers", [
+    "Goal, scope, or acceptance criteria changes.",
+    "A dependency is unavailable or unsafe to use.",
+    "A step reveals missing approval, missing context, or a public-safety concern.",
+  ]);
+  appendMarkdownSection(lines, "Completion Criteria", [
+    "All visible steps are complete or intentionally deferred.",
+    "Required artifacts are updated and internally consistent.",
+    "Safety constraints are satisfied and related artifacts are named.",
+  ]);
+  appendMarkdownSection(lines, "Risks", [
+    "Treating the plan as hidden chain-of-thought instead of a user-visible coordination artifact.",
+    "Confusing temporary run state with durable memory.",
+    "Skipping approval or review when the plan changes authority, tools, or data handling.",
+  ]);
+  appendMarkdownSection(lines, "Related Artifacts", artifact.relatedArtifacts);
+
+  return finish(lines);
+}
+
+function renderHandoffContract(artifact, values) {
+  const handoffName = cleanText(values.handoffName, artifact.name);
+  const lines = [`# ${handoffName}`, ""];
+
+  appendMarkdownSection(lines, "Purpose", `${handoffName} defines a framework-neutral transfer of context, responsibility, and next actions between roles.`);
+  appendMarkdownSection(lines, "Canonical Bucket", [
+    "This is a builder flow under Planning and orchestration.",
+    "Protocol surfaces such as MCP tools, A2A Agent Cards, workflow graphs, or vendor-specific agents are mappings or adapters, not replacement taxonomy buckets.",
+  ]);
+  appendMarkdownSection(lines, "Source Agent Or Role", values.sender);
+  appendMarkdownSection(lines, "Target Agent Or Role", values.receiver);
+  appendMarkdownSection(lines, "When To Hand Off", [
+    "The source role has completed its scoped work or reached an explicit transfer point.",
+    "The next action requires a different role, authority boundary, tool permission, or review posture.",
+    "The source role is blocked and the target role is responsible for resolution or triage.",
+  ]);
+  appendMarkdownSection(lines, "Required Handoff Payload", splitLines(values.contextPackage));
+  appendMarkdownSection(lines, "Authority Boundary", [
+    "The source role transfers only the authority explicitly described in this contract.",
+    "The target role must follow its own role profile, tool permissions, guardrails, and approval requirements.",
+    "A handoff does not grant access to private data, new tools, or external side effects by default.",
+  ]);
+  appendMarkdownSection(lines, "Tool And Resource Access Changes", [
+    "List any changed tool, resource, or workspace access in a related tool spec, resource manifest, or runtime config.",
+    "Use placeholder references in public examples.",
+    "Do not include private endpoints, account ids, credentials, or internal system names.",
+  ]);
+  appendMarkdownSection(lines, "Approval Requirements", [
+    "Require explicit approval before changing authority, adding side effects, accessing private context, or publishing outputs.",
+    "Preserve declined or missing approvals as visible status rather than assuming consent.",
+    "Escalate when acceptance criteria conflict with guardrails or public-safety constraints.",
+  ]);
+  appendMarkdownSection(lines, "Failure And Fallback Behavior", [
+    "If the payload is incomplete, request the missing fields or return to the source role.",
+    "If the target role lacks required authority, pause and request approval or reassignment.",
+    "If safety constraints are unclear, use a synthetic placeholder and document the open question.",
+  ]);
+  appendMarkdownSection(lines, "Acceptance Criteria", splitLines(values.acceptanceCriteria));
+  appendMarkdownSection(lines, "Audit And Trace Notes", [
+    "Record handoff status, payload completeness, approvals, and follow-up actions with synthetic public-safe examples.",
+    "Do not commit raw runtime traces, private logs, customer details, employee data, or unsanitized transcripts.",
+  ]);
+  appendMarkdownSection(lines, "Related Artifacts", artifact.relatedArtifacts);
 
   return finish(lines);
 }

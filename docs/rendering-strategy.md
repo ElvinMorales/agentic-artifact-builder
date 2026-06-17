@@ -31,6 +31,12 @@ Renderers must not introduce new top-level taxonomy buckets. They may show frame
 
 Keep memory and state separate. Keep design-time, runtime, and iteration artifacts distinct. Use synthetic, generic content only, and do not include secrets, private data, proprietary workflows, regulated data, private endpoints, unsanitized logs, real traces, live memory stores, or production state.
 
+Memory renderers describe durable reusable knowledge rules: what may be remembered, what must not be remembered, retention, review, retrieval, and deletion or correction controls. They must not generate real memory entries or live memory store exports.
+
+State renderers describe the current or resumable condition of a run, session, thread, workflow, or task. They may describe state schemas, checkpoint posture, approval status, and resume behavior, but public examples must not commit live state snapshots, raw runtime logs, unsanitized traces, or production state.
+
+Plan and handoff renderers are separate builder flows under the canonical Planning and orchestration bucket. Plan records capture user-visible goals, steps, dependencies, assumptions, status, replanning triggers, and completion criteria. They are not a place for hidden chain-of-thought. Handoff contracts capture transfer conditions, required payloads, authority boundaries, access changes, approval needs, fallback behavior, and audit notes.
+
 ## Covered In This Pass
 
 - `agent-manifest`
@@ -41,13 +47,13 @@ Keep memory and state separate. Keep design-time, runtime, and iteration artifac
 - `resource-manifest`
 - `system-task-prompt`
 - `interface-schema`
-
-## Fallback-Only Artifact IDs
-
 - `memory-policy`
 - `state-strategy`
 - `plan-record`
 - `handoff-contract`
+
+## Fallback-Only Artifact IDs
+
 - `guardrails-governance-policy`
 - `output-schema`
 - `eval-rubric`
