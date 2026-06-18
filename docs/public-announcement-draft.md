@@ -28,6 +28,14 @@ Release notes: `https://github.com/ElvinMorales/agentic-artifact-builder/release
 
 Source: `https://github.com/ElvinMorales/agentic-artifact-builder`
 
+## Acknowledgments
+
+This project was partly inspired by a skill-building workshop artifact created by [@jpak-lilly](https://github.com/jpak-lilly).
+
+That workshop helped spark the idea for a broader, public-safe, taxonomy-aligned builder for agentic AI artifacts across manifests, skills, tools, prompts, memory/state strategies, guardrails, schemas, evals, runtime notes, and iteration records.
+
+The builder in this repo is a separate public project and does not include private workshop materials, internal workflows, proprietary examples, or employer-specific content.
+
 ## Portfolio Update
 
 Agentic Artifact Builder `v0.1.0` is a small browser-based builder that helps people explore and generate starter artifacts for agentic AI systems using a taxonomy-first approach. It treats prompts as one artifact among many: agents also need manifests, skills, tools, memory and state strategies, guardrails, schemas, evals, runtime notes, and iteration records. The MVP is static, dependency-free, deployed through GitHub Pages, and built around synthetic public-safe examples so learners can inspect the artifact structure before adapting it in a private environment.
