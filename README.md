@@ -146,6 +146,14 @@ This repository must stay public-safe:
 - Keep examples framework-neutral unless a mapping is explicitly about a framework or protocol.
 - Treat protocol-facing artifacts such as MCP resources, MCP tools, MCP prompts, or A2A Agent Cards as mappings or adapters, not as replacements for the taxonomy.
 
+## Acknowledgments
+
+This project was partly inspired by a skill-building workshop artifact created by [@jpak-lilly](https://github.com/jpak-lilly).
+
+That workshop helped spark the idea for a broader, public-safe, taxonomy-aligned builder for agentic AI artifacts across manifests, skills, tools, prompts, memory/state strategies, guardrails, schemas, evals, runtime notes, and iteration records.
+
+The builder in this repo is a separate public project and does not include private workshop materials, internal workflows, proprietary examples, or employer-specific content.
+
 ## Status
 
 `v0.1.0` static MVP.
