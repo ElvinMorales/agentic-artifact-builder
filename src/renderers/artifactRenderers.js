@@ -29,6 +29,7 @@ export const artifactRenderers = {
   "eval-rubric": renderEvalRubric,
   "runtime-config": renderRuntimeConfig,
   "iteration-changelog-note": renderIterationChangelogNote,
+  "public-scaffold-release-package": renderPublicScaffoldReleasePackage,
 };
 
 export const artifactDownloadFilenames = {
@@ -49,6 +50,7 @@ export const artifactDownloadFilenames = {
   "eval-rubric": "eval-rubric.md",
   "runtime-config": "RUNTIME.md",
   "iteration-changelog-note": "CHANGELOG.md",
+  "public-scaffold-release-package": "release-package.md",
 };
 
 function renderAgentManifest(artifact, values) {
@@ -641,6 +643,41 @@ function renderIterationChangelogNote(artifact, values) {
   ]);
   appendMarkdownSection(lines, "Related Artifacts", artifact.relatedArtifacts);
   appendMarkdownSection(lines, "Public-Safety Notes", artifact.publicSafetyNotes);
+
+  return finish(lines);
+}
+
+function renderPublicScaffoldReleasePackage(artifact, values) {
+  const releaseName = cleanText(values.releaseName, artifact.name);
+  const lines = [`# ${releaseName}`, ""];
+
+  appendMarkdownSection(lines, "Purpose", [
+    "Prepare a reviewable, public-safe scaffold release and its communication drafts.",
+    "This package documents release readiness; it is not a production-readiness certification.",
+  ]);
+  appendMarkdownSection(lines, "Release posture", [
+    cleanText(values.releasePosture),
+    "Keep public release copy separate from private deployment notes and operational context.",
+  ]);
+  appendMarkdownSection(lines, "What changed", splitLines(values.changes));
+  appendMarkdownSection(
+    lines,
+    "What is intentionally not included",
+    splitLines(values.intentionallyNotIncluded)
+  );
+  appendMarkdownSection(lines, "Public-safety review", [
+    ...splitLines(values.publicSafetyReview),
+    "Private Memory, live State, raw traces, credentials, private endpoints, and employer-specific details do not belong in public release notes.",
+  ]);
+  appendMarkdownSection(lines, "Validation checks", splitLines(values.validationChecks));
+  appendMarkdownSection(lines, "GitHub release draft", values.releaseDraft);
+  appendMarkdownSection(lines, "Short social draft", values.socialDraft);
+  appendMarkdownSection(
+    lines,
+    "Follow-up communication notes",
+    splitLines(values.followUps)
+  );
+  appendMarkdownSection(lines, "Related artifacts", artifact.relatedArtifacts);
 
   return finish(lines);
 }

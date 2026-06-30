@@ -86,7 +86,7 @@ For GitHub Pages setup, see [docs/publishing.md](docs/publishing.md). The recomm
 
 ## Examples And Validation
 
-The first public-safe example pack lives in `examples/synthetic-docs-assistant/`. It contains renderer-generated starter artifacts for the current catalog and shows how the 17 builder artifact types map back to the stable 14 taxonomy buckets.
+The first public-safe example pack lives in `examples/synthetic-docs-assistant/`. It contains renderer-generated starter artifacts for the current catalog and shows how the 18 builder artifact types map back to the stable 14 taxonomy buckets.
 
 Use `docs/public-safety-checklist.md` before committing or publishing generated artifacts. Public examples must stay synthetic and must not include secrets, private data, proprietary workflows, regulated data, private logs, real traces, memory entries, or live state snapshots.
 
@@ -122,7 +122,7 @@ Over time, the builder should help generate starter artifacts such as:
 - Output schemas.
 - Evaluation rubrics and observability notes.
 - Runtime configs.
-- Iteration or changelog notes.
+- Iteration or changelog notes and public scaffold release packages.
 
 Possible filenames are examples, not universal standards, unless a protocol or framework requires a specific name.
 
@@ -160,4 +160,4 @@ The builder in this repo is a separate public project and does not include priva
 
 The repo now includes a catalog-driven static builder that lets users select taxonomy artifact types, read learning guidance, fill generated fields, preview generated starter artifacts, load synthetic examples, reset values, copy output, and download starter files.
 
-The artifact-specific renderers now cover the current catalog: identity, operating style, capability, tool, resource, prompt, interface, memory, state, plan, handoff, guardrails, output schema, evaluation rubric, runtime config, and iteration or changelog starter files. The generic fallback renderer remains available for future catalog entries before they receive specialized output.
+The artifact-specific renderers now cover the current catalog: identity, operating style, capability, tool, resource, prompt, interface, memory, state, plan, handoff, guardrails, output schema, evaluation rubric, runtime config, iteration or changelog, and public scaffold release package starter files. The generic fallback renderer remains available for future catalog entries before they receive specialized output.

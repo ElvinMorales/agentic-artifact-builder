@@ -1,6 +1,6 @@
 # Synthetic Docs Assistant Example
 
-This example is a fully synthetic agent artifact bundle generated from the current Agentic Artifact Builder catalog. It shows how the 17 current builder artifact types can fit together for a small documentation assistant that helps learners turn public-safe notes into structured starter docs.
+This example is a fully synthetic agent artifact bundle generated from the current Agentic Artifact Builder catalog. It shows how the 18 current builder artifact types can fit together for a small documentation assistant that helps learners turn public-safe notes into structured starter docs.
 
 ## What This Is
 
@@ -39,7 +39,7 @@ The bundle preserves the stable 14 top-level buckets from the taxonomy:
 11. Outputs and schemas: `OUTPUT.md`
 12. Evaluation and observability: `eval-rubric.md`
 13. Runtime and deployment: `RUNTIME.md`
-14. Learning and iteration: `CHANGELOG.md`
+14. Learning and iteration: `CHANGELOG.md`, `release-package.md`
 
 ## How The Artifacts Relate
 
@@ -47,7 +47,7 @@ Start with `AGENT.yaml` for identity and scope, then read `persona.md` and `prin
 
 `PROMPT.md` and `INTERFACE.md` describe model-facing instructions and interaction contracts. `MEMORY.md` defines durable preference policy, while `state-strategy.md` defines current session and workflow state. These are intentionally separate.
 
-`PLAN.md` and `HANDOFFS.md` describe visible coordination and transfer of work. `GUARDRAILS.md` defines approval and safety boundaries. `OUTPUT.md` describes the generated output contract, `eval-rubric.md` describes review criteria, `RUNTIME.md` describes non-secret runtime assumptions, and `CHANGELOG.md` records iteration notes.
+`PLAN.md` and `HANDOFFS.md` describe visible coordination and transfer of work. `GUARDRAILS.md` defines approval and safety boundaries. `OUTPUT.md` describes the generated output contract, `eval-rubric.md` describes review criteria, `RUNTIME.md` describes non-secret runtime assumptions, `CHANGELOG.md` records iteration notes, and `release-package.md` prepares public-safe release communication without claiming production readiness.
 
 Runtime files in this example are templates only. They must not be replaced in the public repository with unsanitized live sessions, traces, logs, private state snapshots, secrets, private memory stores, or workspace snapshots.
 
