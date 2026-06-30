@@ -117,6 +117,17 @@ export const exampleValues = {
     followUps: "Add lightweight automated renderer snapshot checks\nAdd a short catalog renderer coverage table\nReview examples before public release notes\nConsider export bundles after renderer coverage stabilizes",
     affectedArtifacts: "guardrails-governance-policy\noutput-schema\neval-rubric\nruntime-config\niteration-changelog-note",
   },
+  "public-scaffold-release-package": {
+    releaseName: "Synthetic Documentation Assistant Scaffold v0.2",
+    releasePosture: "A public learning scaffold ready for review and reuse with synthetic inputs. It is not a production deployment, security approval, or certification.",
+    changes: "Added guided artifact templates for release preparation\nConnected release notes to public-safety and evaluation artifacts\nDocumented concise validation and follow-up communication fields",
+    intentionallyNotIncluded: "Production runtime configuration\nPrivate deployment notes or endpoints\nLive memory, state, logs, traces, or user data\nClaims of production readiness or platform endorsement",
+    publicSafetyReview: "Examples use synthetic, generic project language\nRelease copy contains no credentials, private URLs, or real identifiers\nMemory and state are referenced only as private data that must stay out of public notes\nPublic communication is separated from any private adaptation work",
+    validationChecks: "Catalog integrity checks pass\nRenderer smoke checks pass\nGenerated filename is repository-safe\nMarkdown output reviewed against the public-safety checklist",
+    releaseDraft: "This release adds a public-safe scaffold release package to the synthetic documentation assistant example. It helps maintainers collect release posture, changes, exclusions, safety checks, validation results, and follow-up notes before sharing an educational scaffold.",
+    socialDraft: "A new public scaffold release package template is available for preparing concise, public-safe educational releases. It separates release readiness from production readiness and keeps private operational context out of public notes.",
+    followUps: "Review learner feedback after publication\nLink any future corrections to the iteration changelog\nRe-run validation before updating public communication",
+  },
 };
 
 export default exampleValues;

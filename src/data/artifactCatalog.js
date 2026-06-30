@@ -465,6 +465,48 @@ export const artifactCatalog = [
     ],
     relatedArtifacts: ["eval-rubric", "plan-record", "guardrails-governance-policy"],
   },
+  {
+    id: "public-scaffold-release-package",
+    bucket: "learning-and-iteration",
+    name: "Public scaffold release package",
+    description:
+      "A reviewable package for preparing a public-safe scaffold release, including release posture, what changed, what is intentionally not included, safety review, validation checks, release draft, and follow-up communication notes.",
+    lifecycleStage: "iteration",
+    exampleFilenames: [
+      "release-package.md",
+      "docs/release-package.md",
+      "docs/public-communication-package.md",
+    ],
+    learningGoals: [
+      "Prepare release communication as a versioned artifact.",
+      "Separate release readiness from production readiness.",
+      "Review public-safety boundaries before announcement.",
+      "Connect validation results, known limitations, and follow-up tasks.",
+    ],
+    fields: [
+      { id: "releaseName", label: "Release name", type: "text", required: true },
+      { id: "releasePosture", label: "Release posture", type: "textarea", required: true },
+      { id: "changes", label: "What changed", type: "list", required: true },
+      { id: "intentionallyNotIncluded", label: "What is intentionally not included", type: "list", required: true },
+      { id: "publicSafetyReview", label: "Public-safety review", type: "list", required: true },
+      { id: "validationChecks", label: "Validation checks", type: "list", required: true },
+      { id: "releaseDraft", label: "GitHub release draft", type: "textarea", required: false },
+      { id: "socialDraft", label: "Short social draft", type: "textarea", required: false },
+      { id: "followUps", label: "Follow-up communication notes", type: "list", required: false },
+    ],
+    publicSafetyNotes: [
+      "Use synthetic, generic examples only.",
+      "Do not include employer-specific content, proprietary workflows, regulated data, private endpoints, secrets, unsanitized logs, live runtime traces, real memory stores, or production state.",
+      "Do not imply production readiness, professional advice, certification, platform endorsement, or employer endorsement.",
+      "Keep release copy separate from private deployment notes.",
+    ],
+    relatedArtifacts: [
+      "iteration-changelog-note",
+      "guardrails-governance-policy",
+      "eval-rubric",
+      "runtime-config",
+    ],
+  },
 ];
 
 export default {

@@ -95,6 +95,19 @@ assert.equal(
   "eval rubric renderer should not duplicate the trace/log warning in Public-Safety Checks"
 );
 
+const releasePackageArtifact = artifactCatalog.find(
+  (artifact) => artifact.id === "public-scaffold-release-package"
+);
+const releasePackageText = renderArtifactMarkdown(
+  releasePackageArtifact,
+  exampleValues["public-scaffold-release-package"]
+);
+assert.match(releasePackageText, /## Release posture/);
+assert.match(releasePackageText, /## What changed/);
+assert.match(releasePackageText, /## Public-safety review/);
+assert.match(releasePackageText, /## Validation checks/);
+assert.match(releasePackageText, /not a production-readiness certification/i);
+
 for (const artifact of artifactCatalog) {
   assert.equal(
     typeof artifactRenderers[artifact.id],
