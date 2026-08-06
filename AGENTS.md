@@ -74,6 +74,8 @@ Do not make React, Vue, Svelte, Next.js, Vite, or any other framework part of th
 
 Do not add dependencies unless they are necessary for the issue being implemented.
 
+A `package.json` that declares only metadata, `engines`, and `scripts` — with no `dependencies`, no `devDependencies`, and no lockfile — is not "adding a framework, dependency, or build tooling." It is a way to invoke the same Node-built-in checks the repo already runs.
+
 ## Adding Artifact Types
 
 When adding or changing artifact types:

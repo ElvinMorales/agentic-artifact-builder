@@ -12,7 +12,7 @@ The taxonomy repository is the conceptual source of truth. Contributions here sh
 - Treat plans and handoffs as sub-surfaces inside Planning and orchestration.
 - Treat protocol surfaces such as MCP resources, MCP prompts, MCP tools, and A2A Agent Cards as mappings or adapters, not taxonomy replacements.
 - Keep generated examples educational starter artifacts, not production guarantees.
-- Do not add frameworks, dependencies, package managers, or build tooling unless an issue explicitly requires it.
+- Do not add frameworks, dependencies, package managers, or build tooling unless an issue explicitly requires it. A scripts-only `package.json` (no `dependencies`, no `devDependencies`, no lockfile) that just runs the existing Node-built-in checks does not count as adding tooling.
 
 ## Public-Safety Rules
 
@@ -71,15 +71,10 @@ Run these checks before opening a pull request:
 ```bash
 git status --short --branch
 git diff --check
-node --check src/app.js
-node --check src/renderers/markdownRenderer.js
-node --check src/renderers/artifactRenderers.js
-node --check src/renderers/rendererUtils.js
-node --check src/examples/exampleValues.js
-node --check src/data/artifactCatalog.js
-node tests/catalogIntegrity.test.mjs
-node tests/rendererSmoke.test.mjs
+npm run validate
 ```
+
+`npm run validate` runs the same syntax checks and test files as `.github/workflows/validate.yml`, in the same order. `package.json` is the source of truth for what gets checked; see its `scripts` field for the individual steps.
 
 If your change touches UI behavior, also run the static app locally:
 
