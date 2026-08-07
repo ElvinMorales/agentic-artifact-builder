@@ -5,6 +5,7 @@ import {
 } from "./data/artifactCatalog.js";
 import { exampleValues } from "./examples/exampleValues.js";
 import {
+  getDownloadContentType,
   getDownloadFilename,
   renderMarkdownArtifact,
 } from "./renderers/markdownRenderer.js";
@@ -96,17 +97,18 @@ copyButton.addEventListener("click", async () => {
 
 downloadButton.addEventListener("click", () => {
   const artifact = getSelectedArtifact();
-  const blob = new Blob([previewElement.value], { type: "text/markdown;charset=utf-8" });
+  const filename = getDownloadFilename(artifact, getCurrentValues());
+  const blob = new Blob([previewElement.value], { type: getDownloadContentType(filename) });
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
 
   link.href = url;
-  link.download = getDownloadFilename(artifact);
+  link.download = filename;
   document.body.append(link);
   link.click();
   link.remove();
   URL.revokeObjectURL(url);
-  showStatus(`${link.download} downloaded.`);
+  showStatus(`${getSavedFilename(filename)} downloaded.`);
 });
 
 function renderApp() {
@@ -373,6 +375,10 @@ function getSelectOptions(field) {
   };
 
   return optionsByFieldId[field.id] || [];
+}
+
+function getSavedFilename(requestedFilename) {
+  return requestedFilename.replace(/[\\/]/g, "_");
 }
 
 async function copyText(text) {

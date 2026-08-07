@@ -189,7 +189,7 @@ export const artifactCatalog = [
     description:
       "Defines model-facing instructions for system behavior, task execution, constraints, and response expectations.",
     lifecycleStage: "design-time",
-    exampleFilenames: ["PROMPT.md", "system-prompt.md", "task-prompt.md"],
+    exampleFilenames: ["prompt.md", "system-prompt.md", "task-prompt.md"],
     learningGoals: [
       "Separate prompt instructions from identity and policy artifacts.",
       "Write clear task constraints and output expectations.",
@@ -212,7 +212,7 @@ export const artifactCatalog = [
     description:
       "Defines the interaction contract between a user, agent, tool, service, or another system.",
     lifecycleStage: "design-time",
-    exampleFilenames: ["INTERFACE.md", "interface.schema.json"],
+    exampleFilenames: ["interface.md", "interface.schema.json"],
     learningGoals: [
       "Describe interaction boundaries separately from prompts.",
       "Define required inputs, outputs, and error states.",
@@ -238,7 +238,7 @@ export const artifactCatalog = [
     description:
       "Defines what may be remembered, retention rules, privacy boundaries, retrieval expectations, and user controls.",
     lifecycleStage: "design-time",
-    exampleFilenames: ["MEMORY.md", "memory-policy.yaml"],
+    exampleFilenames: ["memory.md", "memory-policy.yaml"],
     learningGoals: [
       "Keep memory separate from workflow state.",
       "Define retention and deletion expectations.",
@@ -291,7 +291,7 @@ export const artifactCatalog = [
     description:
       "Captures intended work, steps, dependencies, assumptions, and progress for a task or workflow.",
     lifecycleStage: "runtime",
-    exampleFilenames: ["PLAN.md", "plan-record.md"],
+    exampleFilenames: ["plan.md", "plan-record.md"],
     learningGoals: [
       "Represent plans as explicit artifacts.",
       "Track assumptions and dependencies.",
@@ -317,7 +317,7 @@ export const artifactCatalog = [
     description:
       "Defines how context, ownership, next actions, constraints, and acceptance criteria transfer between agents or people.",
     lifecycleStage: "runtime",
-    exampleFilenames: ["HANDOFFS.md", "handoff.schema.json"],
+    exampleFilenames: ["handoffs.md", "handoff.schema.json"],
     learningGoals: [
       "Make transfer of work explicit.",
       "Define required context and acceptance criteria.",
@@ -344,7 +344,7 @@ export const artifactCatalog = [
     description:
       "Defines safety boundaries, approvals, prohibited behavior, escalation paths, and governance expectations.",
     lifecycleStage: "design-time",
-    exampleFilenames: ["GUARDRAILS.md", "approval-rules.yaml"],
+    exampleFilenames: ["guardrails.md", "approval-rules.yaml"],
     learningGoals: [
       "Translate safety requirements into explicit rules.",
       "Define approval and escalation paths.",
@@ -367,7 +367,7 @@ export const artifactCatalog = [
     description:
       "Defines the structure, required fields, constraints, and examples for generated outputs.",
     lifecycleStage: "design-time",
-    exampleFilenames: ["output.schema.json", "OUTPUT.md"],
+    exampleFilenames: ["output.schema.json", "output.md"],
     learningGoals: [
       "Make generated outputs predictable.",
       "Separate output shape from prompt wording.",
@@ -419,7 +419,7 @@ export const artifactCatalog = [
     description:
       "Defines deployment assumptions, environment settings, operational limits, and runtime dependencies.",
     lifecycleStage: "runtime",
-    exampleFilenames: ["RUNTIME.md", "runtime-config.yaml"],
+    exampleFilenames: ["runtime.md", "runtime-config.yaml"],
     learningGoals: [
       "Separate runtime settings from design-time intent.",
       "Document operational limits and dependencies.",

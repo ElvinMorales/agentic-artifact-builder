@@ -1,6 +1,7 @@
 import {
   artifactDownloadFilenames,
   artifactRenderers,
+  getSkillModuleDirectorySlug,
 } from "./artifactRenderers.js";
 import {
   appendKeyValueList,
@@ -8,6 +9,13 @@ import {
   EMPTY_VALUE,
   splitLines,
 } from "./rendererUtils.js";
+
+const CONTENT_TYPES_BY_EXTENSION = {
+  md: "text/markdown;charset=utf-8",
+  yaml: "text/yaml;charset=utf-8",
+  yml: "text/yaml;charset=utf-8",
+  json: "application/json;charset=utf-8",
+};
 
 export function renderMarkdownArtifact(artifact, bucket, values = {}) {
   return renderArtifactMarkdown(artifact, values, bucket);
@@ -59,8 +67,17 @@ export function renderGenericArtifactMarkdown(artifact, values = {}, bucket = un
   return `${lines.join("\n").trim()}\n`;
 }
 
-export function getDownloadFilename(artifact) {
+export function getDownloadFilename(artifact, values) {
+  if (artifact.id === "skill-module" && values) {
+    return `${getSkillModuleDirectorySlug(values)}/SKILL.md`;
+  }
+
   return artifactDownloadFilenames[artifact.id] || `${artifact.id}.md`;
+}
+
+export function getDownloadContentType(filename) {
+  const extension = filename.split(".").pop().toLowerCase();
+  return CONTENT_TYPES_BY_EXTENSION[extension] || "text/plain;charset=utf-8";
 }
 
 function appendFieldValue(lines, rawValue, type) {
