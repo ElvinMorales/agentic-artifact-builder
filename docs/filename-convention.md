@@ -29,16 +29,11 @@ The companion [taxonomy repo](https://github.com/ElvinMorales/agentic-ai-artifac
 
 `slugify()` (`src/renderers/rendererUtils.js`) caps its output at 64 characters and strips any trailing hyphen left by truncation, so the generated frontmatter `name` always satisfies the length and character constraints.
 
-For the parent-directory requirement: `getDownloadFilename(artifact, values)` returns a directory-scoped path for `skill-module`, e.g. `research/SKILL.md`, where the directory segment is the same slug used for the frontmatter `name`.
+**Browser limitation.** The HTML `download` attribute does not create real subdirectories, and per the HTML spec (confirmed against MDN) sanitizes any `/` or `\` in the attribute value to `_` before saving. So encoding the skill directory into the download filename itself cannot produce a real `<slug>/SKILL.md` path on disk — it would only rename the flat file to something like `research_SKILL.md`, which is not a valid Agent Skills package either.
 
-**Browser limitation.** The HTML `download` attribute does not create real subdirectories. Per the HTML spec (and confirmed against MDN), a `/` or `\` in the `download` attribute value is sanitized to `_` by the browser before saving. So a requested `research/SKILL.md` is actually saved by the browser as `research_SKILL.md` in the user's downloads folder, not as `research/SKILL.md` on disk.
+Given that, the download stays a flat `SKILL.md` (`artifactDownloadFilenames["skill-module"]`, returned as-is by the single-argument `getDownloadFilename(artifact)`). The directory requirement is instead surfaced in the app's status message after download (`getDownloadStatusMessage()` in `src/app.js`): "`SKILL.md downloaded — place it at <slug>/SKILL.md.`", where `<slug>` is computed by the same `getSkillModuleDirectorySlug(values)` helper used for the rendered frontmatter `name` — so the message and the frontmatter can never disagree.
 
-Given that, and without adding a zip dependency (out of scope for this change), the app:
-
-- still requests the directory-scoped path, so the saved filename is prefixed with the correct skill slug and is traceable back to the frontmatter `name`, and
-- shows a status message with the filename the browser will actually save (`getSavedFilename()` in `src/app.js`), not the unsanitized path, so the UI never claims a directory was created when it wasn't.
-
-Users who want a conformant Agent Skills package must manually move the downloaded file into `<skill-slug>/SKILL.md` before treating it as one — the same requirement the taxonomy repo's own `templates/SKILL.md` calls out ("a bare `templates/SKILL.md` is not an Agent Skills package because its parent directory does not match `name`").
+Users who want a conformant Agent Skills package must manually move the downloaded `SKILL.md` into a `<slug>/` directory before treating it as one — the same requirement the taxonomy repo's own `templates/SKILL.md` calls out ("a bare `templates/SKILL.md` is not an Agent Skills package because its parent directory does not match `name`").
 
 ## Lowercase Basename Pattern
 

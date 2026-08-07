@@ -1,7 +1,11 @@
 import assert from "node:assert/strict";
 
 import { artifactCatalog } from "../src/data/artifactCatalog.js";
-import { artifactDownloadFilenames, artifactRenderers } from "../src/renderers/artifactRenderers.js";
+import {
+  artifactDownloadFilenames,
+  artifactRenderers,
+  getSkillModuleDirectorySlug,
+} from "../src/renderers/artifactRenderers.js";
 import { getDownloadContentType, getDownloadFilename } from "../src/renderers/markdownRenderer.js";
 
 const LOWERCASE_BASENAME_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*\.[a-z0-9]+$/;
@@ -49,19 +53,19 @@ assert.equal(
 );
 assert.equal(yamlExample, "agent.yaml", "agent-manifest's yaml filename must be lowercase agent.yaml");
 
-// Skill module: frontmatter name capped at 64 chars, no trailing hyphen, directory matches name.
+// Skill module: frontmatter name capped at 64 chars, no trailing hyphen, matches the documented directory slug.
 const skillArtifact = artifactCatalog.find((artifact) => artifact.id === "skill-module");
 const longSkillValues = {
   skillName: "A Very Long Capability Module Name For Regression Testing Purposes Indeed Yes Truly",
 };
 
-const skillDownloadPath = getDownloadFilename(skillArtifact, longSkillValues);
-const [skillDir, skillFile] = skillDownloadPath.split("/");
+const skillDownloadFilename = getDownloadFilename(skillArtifact);
+assert.equal(skillDownloadFilename, "SKILL.md", "skill-module download must be a flat SKILL.md");
 
-assert.equal(skillFile, "SKILL.md", "skill-module download must be named SKILL.md within its directory");
-assert.ok(skillDir.length <= 64, "skill directory slug must be capped at 64 characters");
+const skillDirectorySlug = getSkillModuleDirectorySlug(longSkillValues);
+assert.ok(skillDirectorySlug.length <= 64, "skill directory slug must be capped at 64 characters");
 assert.match(
-  skillDir,
+  skillDirectorySlug,
   /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
   "skill directory slug must be lowercase, hyphen-separated, with no leading/trailing hyphen"
 );
@@ -72,12 +76,11 @@ const frontmatterNameMatch = renderedSkillText.match(/^name: (.+)$/m);
 assert.ok(frontmatterNameMatch, "rendered skill-module output must include a frontmatter name field");
 assert.equal(
   JSON.parse(frontmatterNameMatch[1]),
-  skillDir,
-  "frontmatter name must match the download directory segment"
+  skillDirectorySlug,
+  "frontmatter name must match the documented directory slug"
 );
 
-// A short skill name must not be affected by the cap and must download without a directory-flattening surprise.
-const shortSkillPath = getDownloadFilename(skillArtifact, { skillName: "Research" });
-assert.equal(shortSkillPath, "research/SKILL.md");
+// A short skill name must not be affected by the cap.
+assert.equal(getSkillModuleDirectorySlug({ skillName: "Research" }), "research");
 
 console.log("filename convention checks passed");

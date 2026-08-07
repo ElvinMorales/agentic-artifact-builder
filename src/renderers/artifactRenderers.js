@@ -39,16 +39,16 @@ export const artifactDownloadFilenames = {
   "skill-module": "SKILL.md",
   "tool-spec": "tools.yaml",
   "resource-manifest": "resources.yaml",
-  "system-task-prompt": "PROMPT.md",
-  "interface-schema": "INTERFACE.md",
-  "memory-policy": "MEMORY.md",
+  "system-task-prompt": "prompt.md",
+  "interface-schema": "interface.md",
+  "memory-policy": "memory.md",
   "state-strategy": "state-strategy.md",
-  "plan-record": "PLAN.md",
-  "handoff-contract": "HANDOFFS.md",
-  "guardrails-governance-policy": "GUARDRAILS.md",
-  "output-schema": "OUTPUT.md",
+  "plan-record": "plan.md",
+  "handoff-contract": "handoffs.md",
+  "guardrails-governance-policy": "guardrails.md",
+  "output-schema": "output.md",
   "eval-rubric": "eval-rubric.md",
-  "runtime-config": "RUNTIME.md",
+  "runtime-config": "runtime.md",
   "iteration-changelog-note": "CHANGELOG.md",
   "public-scaffold-release-package": "release-package.md",
 };
@@ -128,11 +128,15 @@ function renderOperatingPrinciples(artifact, values) {
   return finish(lines);
 }
 
+export function getSkillModuleDirectorySlug(values = {}) {
+  return slugify(cleanText(values.skillName, "starter-skill"), "starter-skill");
+}
+
 function renderSkillModule(artifact, values) {
   const skillName = cleanText(values.skillName, "starter-skill");
   const lines = [
     "---",
-    `name: ${JSON.stringify(slugify(skillName, "starter-skill"))}`,
+    `name: ${JSON.stringify(getSkillModuleDirectorySlug(values))}`,
     `description: ${JSON.stringify(cleanText(values.trigger, "Reusable public-safe capability module."))}`,
     "---",
     "",

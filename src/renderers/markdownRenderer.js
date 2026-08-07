@@ -1,8 +1,4 @@
-import {
-  artifactDownloadFilenames,
-  artifactRenderers,
-  getSkillModuleDirectorySlug,
-} from "./artifactRenderers.js";
+import { artifactDownloadFilenames, artifactRenderers } from "./artifactRenderers.js";
 import {
   appendKeyValueList,
   appendList,
@@ -67,11 +63,7 @@ export function renderGenericArtifactMarkdown(artifact, values = {}, bucket = un
   return `${lines.join("\n").trim()}\n`;
 }
 
-export function getDownloadFilename(artifact, values) {
-  if (artifact.id === "skill-module" && values) {
-    return `${getSkillModuleDirectorySlug(values)}/SKILL.md`;
-  }
-
+export function getDownloadFilename(artifact) {
   return artifactDownloadFilenames[artifact.id] || `${artifact.id}.md`;
 }
 

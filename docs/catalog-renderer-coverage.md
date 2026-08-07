@@ -7,7 +7,7 @@ This table tracks renderer coverage for the current catalog. The generic fallbac
 | `agent-manifest` | Identity | `design-time` | Specialized | `agent.yaml` | Existing |
 | `role-profile` | Identity | `design-time` | Specialized | `persona.md` | Existing |
 | `operating-principles` | Operating style | `design-time` | Specialized | `principles.md` | Existing |
-| `skill-module` | Capability modules | `design-time` | Specialized | `<skill-slug>/SKILL.md` (see [filename-convention.md](filename-convention.md)) | Existing |
+| `skill-module` | Capability modules | `design-time` | Specialized | `SKILL.md` (place at `<skill-slug>/SKILL.md`; see [filename-convention.md](filename-convention.md)) | Existing |
 | `tool-spec` | Tools | `design-time` | Specialized | `tools.yaml` | Existing |
 | `resource-manifest` | Knowledge and resources | `design-time` | Specialized | `resources.yaml` | Existing |
 | `system-task-prompt` | Prompts and interfaces | `design-time` | Specialized | `prompt.md` | Existing |

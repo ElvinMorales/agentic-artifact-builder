@@ -4,6 +4,7 @@ import {
   taxonomyBuckets,
 } from "./data/artifactCatalog.js";
 import { exampleValues } from "./examples/exampleValues.js";
+import { getSkillModuleDirectorySlug } from "./renderers/artifactRenderers.js";
 import {
   getDownloadContentType,
   getDownloadFilename,
@@ -97,7 +98,7 @@ copyButton.addEventListener("click", async () => {
 
 downloadButton.addEventListener("click", () => {
   const artifact = getSelectedArtifact();
-  const filename = getDownloadFilename(artifact, getCurrentValues());
+  const filename = getDownloadFilename(artifact);
   const blob = new Blob([previewElement.value], { type: getDownloadContentType(filename) });
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
@@ -108,7 +109,7 @@ downloadButton.addEventListener("click", () => {
   link.click();
   link.remove();
   URL.revokeObjectURL(url);
-  showStatus(`${getSavedFilename(filename)} downloaded.`);
+  showStatus(getDownloadStatusMessage(artifact, filename));
 });
 
 function renderApp() {
@@ -377,8 +378,13 @@ function getSelectOptions(field) {
   return optionsByFieldId[field.id] || [];
 }
 
-function getSavedFilename(requestedFilename) {
-  return requestedFilename.replace(/[\\/]/g, "_");
+function getDownloadStatusMessage(artifact, filename) {
+  if (artifact.id === "skill-module") {
+    const slug = getSkillModuleDirectorySlug(getCurrentValues());
+    return `${filename} downloaded — place it at ${slug}/SKILL.md.`;
+  }
+
+  return `${filename} downloaded.`;
 }
 
 async function copyText(text) {
