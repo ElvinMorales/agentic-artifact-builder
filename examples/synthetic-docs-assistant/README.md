@@ -26,28 +26,28 @@ This is not a production agent, deployment guide, security approval, compliance 
 
 The bundle preserves the stable 14 top-level buckets from the taxonomy:
 
-1. Identity: `AGENT.yaml`, `persona.md`
+1. Identity: `agent.yaml`, `persona.md`
 2. Operating style: `principles.md`
 3. Capability modules: `SKILL.md`
 4. Tools: `tools.yaml`
 5. Knowledge and resources: `resources.yaml`
-6. Prompts and interfaces: `PROMPT.md`, `INTERFACE.md`
-7. Memory: `MEMORY.md`
+6. Prompts and interfaces: `prompt.md`, `interface.md`
+7. Memory: `memory.md`
 8. State: `state-strategy.md`
-9. Planning and orchestration: `PLAN.md`, `HANDOFFS.md`
-10. Guardrails and governance: `GUARDRAILS.md`
-11. Outputs and schemas: `OUTPUT.md`
+9. Planning and orchestration: `plan.md`, `handoffs.md`
+10. Guardrails and governance: `guardrails.md`
+11. Outputs and schemas: `output.md`
 12. Evaluation and observability: `eval-rubric.md`
-13. Runtime and deployment: `RUNTIME.md`
+13. Runtime and deployment: `runtime.md`
 14. Learning and iteration: `CHANGELOG.md`, `release-package.md`
 
 ## How The Artifacts Relate
 
-Start with `AGENT.yaml` for identity and scope, then read `persona.md` and `principles.md` for collaboration behavior. `SKILL.md`, `tools.yaml`, and `resources.yaml` describe reusable capability, tool, and reference boundaries.
+Start with `agent.yaml` for identity and scope, then read `persona.md` and `principles.md` for collaboration behavior. `SKILL.md`, `tools.yaml`, and `resources.yaml` describe reusable capability, tool, and reference boundaries.
 
-`PROMPT.md` and `INTERFACE.md` describe model-facing instructions and interaction contracts. `MEMORY.md` defines durable preference policy, while `state-strategy.md` defines current session and workflow state. These are intentionally separate.
+`prompt.md` and `interface.md` describe model-facing instructions and interaction contracts. `memory.md` defines durable preference policy, while `state-strategy.md` defines current session and workflow state. These are intentionally separate.
 
-`PLAN.md` and `HANDOFFS.md` describe visible coordination and transfer of work. `GUARDRAILS.md` defines approval and safety boundaries. `OUTPUT.md` describes the generated output contract, `eval-rubric.md` describes review criteria, `RUNTIME.md` describes non-secret runtime assumptions, `CHANGELOG.md` records iteration notes, and `release-package.md` prepares public-safe release communication without claiming production readiness.
+`plan.md` and `handoffs.md` describe visible coordination and transfer of work. `guardrails.md` defines approval and safety boundaries. `output.md` describes the generated output contract, `eval-rubric.md` describes review criteria, `runtime.md` describes non-secret runtime assumptions, `CHANGELOG.md` records iteration notes, and `release-package.md` prepares public-safe release communication without claiming production readiness.
 
 Runtime files in this example are templates only. They must not be replaced in the public repository with unsanitized live sessions, traces, logs, private state snapshots, secrets, private memory stores, or workspace snapshots.
 

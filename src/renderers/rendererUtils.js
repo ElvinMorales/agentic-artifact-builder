@@ -13,12 +13,14 @@ export function splitLines(value) {
     .filter(Boolean);
 }
 
-export function slugify(value, fallback = "starter-artifact") {
+export function slugify(value, fallback = "starter-artifact", maxLength = 64) {
   const slug = String(value || "")
     .trim()
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
+    .replace(/^-+|-+$/g, "")
+    .slice(0, maxLength)
+    .replace(/-+$/g, "");
 
   return slug || fallback;
 }
