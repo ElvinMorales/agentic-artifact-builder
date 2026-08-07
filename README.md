@@ -90,22 +90,15 @@ The first public-safe example pack lives in `examples/synthetic-docs-assistant/`
 
 Use `docs/public-safety-checklist.md` before committing or publishing generated artifacts. Public examples must stay synthetic and must not include secrets, private data, proprietary workflows, regulated data, private logs, real traces, memory entries, or live state snapshots.
 
-Local validation uses Node built-ins only:
+Local validation uses Node built-ins only, no install step required. `package.json` is the source of truth for the checks; run them all with:
 
 ```bash
-node --check src/app.js
-node --check src/renderers/markdownRenderer.js
-node --check src/renderers/artifactRenderers.js
-node --check src/renderers/rendererUtils.js
-node --check src/examples/exampleValues.js
-node --check src/data/artifactCatalog.js
-node --check tests/catalogIntegrity.test.mjs
-node --check tests/rendererSmoke.test.mjs
-node tests/catalogIntegrity.test.mjs
-node tests/rendererSmoke.test.mjs
+npm run validate
 ```
 
-GitHub Actions runs the same syntax and validation checks on pull requests and pushes to `main` through `.github/workflows/validate.yml`.
+This runs the syntax checks (`npm run check:syntax`) and the test files (`npm run test`) in the same order as CI.
+
+GitHub Actions runs the same checks, via the same `npm run` scripts, on pull requests and pushes to `main` through `.github/workflows/validate.yml`.
 
 ## Artifact Coverage
 
