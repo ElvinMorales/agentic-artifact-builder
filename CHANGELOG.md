@@ -22,6 +22,7 @@
 
 ### Fixed
 
+- Surfaced each catalog artifact's `publicSafetyNotes` in the generated output for the eight renderers that previously declared but never rendered them (`agent-manifest`, `role-profile`, `system-task-prompt`, `interface-schema`, `plan-record`, `handoff-contract`, `output-schema`, `public-scaffold-release-package`), so `plan-record` and `handoff-contract` now reflect the runtime-safety note added in #31. Removed two hardcoded lines in `output-schema` and `handoff-contract` that restated catalog notes verbatim, so the notes now have one source of truth instead of two that could drift.
 - Replaced the placeholder release-notes URL in the public announcement draft with the actual `v0.1.0` release URL.
 - Broadened `check:syntax` to collect any `.js`, `.mjs`, or `.cjs` file under `src/`, `tests/`, and `examples/`, instead of only `src/**/*.js`, `tests/**/*.test.mjs`, and `examples/**/*.js`.
 - Removed an unreachable `${{ ... }}` allowlist pattern from the public-safety scan's placeholder list: the credential-assignment rule's whitespace guard already exits before that pattern could ever be checked for the conventional (spaced) form, so the entry was dead code.

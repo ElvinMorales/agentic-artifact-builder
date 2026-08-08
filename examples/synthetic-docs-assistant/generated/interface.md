@@ -55,6 +55,12 @@ Documentation Draft Request defines a public-safe interaction contract for Learn
 }
 ```
 
+## Public-Safety Notes
+
+- Use synthetic, generic examples only.
+- Do not include secrets, private data, proprietary workflows, regulated data, unsanitized logs, real traces, or production state.
+- Use generic interaction examples and placeholder protocol mappings.
+
 ## Related Artifacts
 
 - system-task-prompt
