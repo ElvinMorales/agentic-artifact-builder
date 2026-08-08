@@ -21,6 +21,19 @@ assert.deepEqual(
   "committed scenario values must cover exactly the current catalog artifact ids"
 );
 
+for (const artifact of artifactCatalog) {
+  for (const field of artifact.fields) {
+    if (!field.required) {
+      continue;
+    }
+
+    assert.ok(
+      String(scenarioValues[artifact.id][field.id] || "").trim().length > 0,
+      `${artifact.id}.${field.id} ("${field.label}") is required but has no value in scenario-values.js`
+    );
+  }
+}
+
 const expectedFilenames = new Set(Object.values(artifactDownloadFilenames));
 const actualFilenames = new Set(fs.readdirSync(packDir));
 
@@ -34,7 +47,7 @@ const mismatches = [];
 
 for (const artifact of artifactCatalog) {
   const bucket = bucketsById.get(artifact.bucket);
-  const values = scenarioValues[artifact.id] || {};
+  const values = scenarioValues[artifact.id];
   const rendered = renderArtifactMarkdown(artifact, values, bucket);
   const filename = getDownloadFilename(artifact);
   const committedPath = path.join(packDir, filename);

@@ -52,6 +52,18 @@ Each artifact entry should include:
 
 Update docs when a catalog change affects product scope, taxonomy alignment, or generated output. Add or update tests when validation or renderer behavior changes.
 
+### `relatedArtifacts` Direction
+
+`relatedArtifacts` is directional "read this next" guidance, not a symmetric graph. An artifact
+may point to another without that artifact pointing back - for example `agent-manifest` lists
+`operating-principles`, but `operating-principles` does not list `agent-manifest`. That
+asymmetry is intentional: reciprocity is not required, and a one-way link should be read as a
+deliberate choice, not an oversight.
+
+Do not add a reciprocal entry just to make a link two-way. `tests/catalogIntegrity.test.mjs`
+checks only that every `relatedArtifacts` id resolves to a real artifact id - it does not, and
+should not, check that the link is returned.
+
 ### When To Bump `artifactCatalogVersion`
 
 `artifactCatalogVersion` (`src/data/artifactCatalog.js`) is a human-readable marker of catalog shape, not a semver contract read by any code. This repository does not follow strict semantic versioning for it. Bump it whenever a change would make someone looking only at the version number wrong about what the catalog currently contains:
