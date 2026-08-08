@@ -21,6 +21,18 @@ This automates the "Secrets And Credentials" and part of the "Private Logs, Trac
 
 Run the rest of this checklist manually for everything the scan does not cover.
 
+## For Renderer Authors
+
+`src/data/artifactCatalog.js` is the source of truth for each artifact's public-safety
+guidance. A renderer should surface `artifact.publicSafetyNotes` rather than hardcoding a
+line that restates what the catalog already says — otherwise the two can drift, and a future
+catalog edit silently stops applying to the generated file.
+
+If a renderer needs a hardcoded line, it should express a genuinely distinct concern (for
+example, agent runtime refusal behavior at generation time) rather than repeat publishing
+hygiene the catalog notes already cover. When in doubt, remove the hardcoded restatement and
+let the catalog-driven section carry it.
+
 ## Safe To Publish?
 
 - [ ] The artifact uses synthetic, generic examples only.

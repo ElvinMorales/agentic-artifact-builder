@@ -61,6 +61,12 @@ Generate and review a public-safe documentation starter artifact for a synthetic
 - Confusing temporary run state with durable memory.
 - Skipping approval or review when the plan changes authority, tools, or data handling.
 
+## Public-Safety Notes
+
+- Use synthetic, generic examples only.
+- Do not include secrets, private data, proprietary workflows, regulated data, unsanitized logs, real traces, or production state.
+- Runtime templates and configuration examples are okay, but do not publish unsanitized live sessions, traces, logs, private state snapshots, secrets, or workspace snapshots.
+
 ## Related Artifacts
 
 - handoff-contract

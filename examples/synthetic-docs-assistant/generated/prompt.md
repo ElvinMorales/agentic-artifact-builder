@@ -43,6 +43,11 @@ Markdown or YAML-like starter file with clear sections and concise bullets.
 - Refuse to include secrets, private data, proprietary workflows, regulated data, or production traces.
 - Explain which field or constraint prevents a safe starter artifact.
 
+## Public-Safety Notes
+
+- Use synthetic, generic examples only.
+- Do not include secrets, private data, proprietary workflows, regulated data, unsanitized logs, real traces, or production state.
+
 ## Related Artifacts
 
 - role-profile

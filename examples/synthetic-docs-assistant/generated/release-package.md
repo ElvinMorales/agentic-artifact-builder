@@ -29,7 +29,10 @@
 - Release copy contains no credentials, private URLs, or real identifiers
 - Memory and state are referenced only as private data that must stay out of public notes
 - Public communication is separated from any private adaptation work
-- Private Memory, live State, raw traces, credentials, private endpoints, and employer-specific details do not belong in public release notes.
+- Use synthetic, generic examples only.
+- Do not include employer-specific content, proprietary workflows, regulated data, private endpoints, secrets, unsanitized logs, live runtime traces, real memory stores, or production state.
+- Do not imply production readiness, professional advice, certification, platform endorsement, or employer endorsement.
+- Keep release copy separate from private deployment notes.
 
 ## Validation checks
 

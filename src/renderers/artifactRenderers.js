@@ -75,6 +75,7 @@ function renderAgentManifest(artifact, values) {
   appendYamlScalar(lines, "version", "0.1.0", 2);
   appendYamlScalar(lines, "lifecycle_stage", artifact.lifecycleStage);
   appendYamlScalar(lines, "canonical_bucket", artifact.bucket);
+  appendYamlList(lines, "public_safety_notes", artifact.publicSafetyNotes);
 
   return finish(lines);
 }
@@ -100,6 +101,7 @@ function renderRoleProfile(artifact, values) {
     "Escalate when the request exceeds the role, requires private context, or needs accountable human review.",
   ]);
   appendMarkdownSection(lines, "Tone And Style Notes", values.tone);
+  appendMarkdownSection(lines, "Public-Safety Notes", artifact.publicSafetyNotes);
   appendMarkdownSection(lines, "Related Artifacts", artifact.relatedArtifacts);
 
   return finish(lines);
@@ -225,6 +227,7 @@ function renderSystemTaskPrompt(artifact, values) {
     "Refuse to include secrets, private data, proprietary workflows, regulated data, or production traces.",
     "Explain which field or constraint prevents a safe starter artifact.",
   ]);
+  appendMarkdownSection(lines, "Public-Safety Notes", artifact.publicSafetyNotes);
   appendMarkdownSection(lines, "Related Artifacts", artifact.relatedArtifacts);
 
   return finish(lines);
@@ -253,6 +256,8 @@ function renderInterfaceSchema(artifact, values) {
   lines.push(JSON.stringify(createExampleRequest(values.interfaceName, inputs), null, 2));
   lines.push("```");
   lines.push("");
+
+  appendMarkdownSection(lines, "Public-Safety Notes", artifact.publicSafetyNotes);
 
   lines.push("## Related Artifacts");
   lines.push("");
@@ -383,6 +388,7 @@ function renderPlanRecord(artifact, values) {
     "Confusing temporary run state with durable memory.",
     "Skipping approval or review when the plan changes authority, tools, or data handling.",
   ]);
+  appendMarkdownSection(lines, "Public-Safety Notes", artifact.publicSafetyNotes);
   appendMarkdownSection(lines, "Related Artifacts", artifact.relatedArtifacts);
 
   return finish(lines);
@@ -428,8 +434,8 @@ function renderHandoffContract(artifact, values) {
   appendMarkdownSection(lines, "Acceptance Criteria", splitLines(values.acceptanceCriteria));
   appendMarkdownSection(lines, "Audit And Trace Notes", [
     "Record handoff status, payload completeness, approvals, and follow-up actions with synthetic public-safe examples.",
-    "Do not commit raw runtime traces, private logs, customer details, employee data, or unsanitized transcripts.",
   ]);
+  appendMarkdownSection(lines, "Public-Safety Notes", artifact.publicSafetyNotes);
   appendMarkdownSection(lines, "Related Artifacts", artifact.relatedArtifacts);
 
   return finish(lines);
@@ -492,8 +498,6 @@ function renderOutputSchema(artifact, values) {
   ]);
   appendMarkdownSection(lines, "Validation Expectations", [
     "Required fields must be present and non-empty.",
-    "Generated examples must remain synthetic, generic, and public-safe.",
-    "The output must not include secrets, private data, regulated data, production state, raw logs, or real traces.",
     ...splitLines(values.constraints),
   ]);
 
@@ -516,6 +520,7 @@ function renderOutputSchema(artifact, values) {
     "Ask for clarification when the requested output contract conflicts with related guardrails or interface expectations.",
     "Use placeholders instead of real private values when demonstrating the schema publicly.",
   ]);
+  appendMarkdownSection(lines, "Public-Safety Notes", artifact.publicSafetyNotes);
   appendMarkdownSection(lines, "Related Artifacts", artifact.relatedArtifacts);
 
   return finish(lines);
@@ -671,7 +676,7 @@ function renderPublicScaffoldReleasePackage(artifact, values) {
   );
   appendMarkdownSection(lines, "Public-safety review", [
     ...splitLines(values.publicSafetyReview),
-    "Private Memory, live State, raw traces, credentials, private endpoints, and employer-specific details do not belong in public release notes.",
+    ...artifact.publicSafetyNotes,
   ]);
   appendMarkdownSection(lines, "Validation checks", splitLines(values.validationChecks));
   appendMarkdownSection(lines, "GitHub release draft", values.releaseDraft);

@@ -27,8 +27,6 @@ Documentation Starter Output Contract defines the generated output contract. It 
 ## Validation Expectations
 
 - Required fields must be present and non-empty.
-- Generated examples must remain synthetic, generic, and public-safe.
-- The output must not include secrets, private data, regulated data, production state, raw logs, or real traces.
 - Use stable field names
 - Keep examples synthetic
 - Preserve related artifact references
@@ -103,6 +101,12 @@ Documentation Starter Output Contract defines the generated output contract. It 
 - Return a validation error when required fields are missing or unsafe values are requested.
 - Ask for clarification when the requested output contract conflicts with related guardrails or interface expectations.
 - Use placeholders instead of real private values when demonstrating the schema publicly.
+
+## Public-Safety Notes
+
+- Use synthetic, generic examples only.
+- Do not include secrets, private data, proprietary workflows, regulated data, unsanitized logs, real traces, or production state.
+- Examples must be synthetic and must not resemble real records.
 
 ## Related Artifacts
 

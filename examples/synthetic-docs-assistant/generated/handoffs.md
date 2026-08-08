@@ -65,7 +65,13 @@ Public-safe documentation reviewer
 ## Audit And Trace Notes
 
 - Record handoff status, payload completeness, approvals, and follow-up actions with synthetic public-safe examples.
-- Do not commit raw runtime traces, private logs, customer details, employee data, or unsanitized transcripts.
+
+## Public-Safety Notes
+
+- Use synthetic, generic examples only.
+- Do not include secrets, private data, proprietary workflows, regulated data, unsanitized logs, real traces, or production state.
+- Do not include real customer, employee, ticket, or incident details.
+- Runtime templates and configuration examples are okay, but do not publish unsanitized live sessions, traces, logs, private state snapshots, secrets, or workspace snapshots.
 
 ## Related Artifacts
 
