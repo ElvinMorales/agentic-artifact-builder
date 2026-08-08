@@ -53,6 +53,13 @@ const PLACEHOLDER_VALUE_PATTERNS = [
   /^[a-z][a-z0-9-]*-placeholder$/,
   /^example-[a-z0-9-]+$/,
   /^https:\/\/example\.invalid(?:\/.*)?$/,
+  // Environment-variable interpolation shapes: the value is a reference to
+  // be resolved elsewhere (a real secret store, CI runner, or shell env),
+  // not a literal secret committed in place. ${NAME}, ${{ ... }} (GitHub
+  // Actions expressions), and %NAME% (Windows-style) are all safe patterns.
+  /^\$\{[A-Za-z_][A-Za-z0-9_]*\}$/,
+  /^\$\{\{[\s\S]*\}\}$/,
+  /^%[A-Za-z_][A-Za-z0-9_]*%$/,
 ];
 
 function isPlaceholderValue(value) {
@@ -107,20 +114,23 @@ const RULES = [
       // since unquoted scalars are the normal YAML style used by this
       // repo's own artifacts (agent.yaml, resources.yaml, tools.yaml).
       const pattern =
-        /\b(?:api[_-]?key|apikey|access[_-]?key|secret[_-]?key|secret|client[_-]?secret|private[_-]?key|password|passwd|auth[_-]?token|session[_-]?token|token)\b\s*[:=]\s*(?:(['"])([^'"\n]{8,})\1|([^\s'"#][^\s#]{7,}))/gi;
+        /\b(?:api[_-]?keys?|apikeys?|access[_-]?keys?|secret[_-]?keys?|secrets?|client[_-]?secrets?|private[_-]?keys?|credentials?|passwords?|passwds?|auth[_-]?tokens?|session[_-]?tokens?|tokens?|bearer)\b\s*[:=]\s*(?:(['"])([^'"\n]{8,})\1|([^\s'"#][^\s#]{7,}))/gi;
       const findings = [];
       let match;
       while ((match = pattern.exec(line)) !== null) {
         const isQuoted = match[2] !== undefined;
         const rawValue = isQuoted ? match[2] : match[3];
         // Trailing punctuation from surrounding syntax (YAML flow braces,
-        // JS statement terminators) is not part of an unquoted value.
+        // JS statement terminators) is not part of an unquoted value - but
+        // an interpolation shape like ${NAME} or %NAME% legitimately ends
+        // in the same characters, so check the untrimmed value against the
+        // placeholder allowlist too, before trimming would break its shape.
         const value = isQuoted ? rawValue : rawValue.replace(/[,;)\]}]+$/, "");
         // A quoted literal that contains whitespace is prose ("token: "the
         // shared secret between two parties""), not an assigned credential
         // value. Unquoted values can't contain whitespace by construction.
         if (/\s/.test(value)) continue;
-        if (isPlaceholderValue(value)) continue;
+        if (isPlaceholderValue(value) || isPlaceholderValue(rawValue)) continue;
         // match[0] always ends with rawValue (quoted: wrapped in quote
         // chars included in rawValue's surrounding match; unquoted: bare).
         // Slice by rawValue's length, not the trimmed value's, so trailing
