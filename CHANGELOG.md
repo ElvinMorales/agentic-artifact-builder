@@ -14,6 +14,7 @@
 - Added repository convention and community files: `.gitattributes` (LF line endings), `.editorconfig`, `CLAUDE.md` (pointing to `AGENTS.md`), `SECURITY.md`, `CODE_OF_CONDUCT.md`, `CODEOWNERS`, and a fourth issue template for engineering and maintenance work.
 - Added required-field coverage checks to `tests/rendererSmoke.test.mjs` and `tests/exampleFixtures.test.mjs`: every catalog artifact must have an entry in `src/examples/exampleValues.js` and `examples/synthetic-docs-assistant/scenario-values.js`, and every `required: true` field must have a non-empty example value in both, naming the artifact and field on failure.
 - Documented the `relatedArtifacts` directionality policy in `CONTRIBUTING.md`: `relatedArtifacts` is directional "read this next" guidance, not a symmetric graph, so one-way links do not need a reciprocal entry.
+- Extracted `src/app.js`'s per-artifact form-state management (`fieldValuesByArtifact`, `getCurrentValues`, `loadExample`, `resetCurrent`) and its artifact-dependent download status message into a new dependency-free `src/appState.js`, and added `tests/appStateBehavior.test.mjs` (wired into `npm run test` as `test:app-state-behavior`) covering per-artifact state persistence across artifact switches, example-value loading with its generic fallback, form reset, the skill-module-specific download status message, and `getDownloadFilename`/`getDownloadContentType` resolution including the `.yaml` case and the unknown-extension fallback. `src/app.js` previously had no test coverage.
 
 ### Changed
 
