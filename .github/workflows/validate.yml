@@ -19,8 +19,5 @@ jobs:
         with:
           node-version: 22
 
-      - name: Syntax checks
-        run: npm run check:syntax
-
-      - name: Validation tests
-        run: npm run test
+      - name: Validate
+        run: npm run validate

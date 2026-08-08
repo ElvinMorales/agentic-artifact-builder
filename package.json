@@ -13,7 +13,8 @@
     "test:renderer-smoke": "node tests/rendererSmoke.test.mjs",
     "test:filename-convention": "node tests/filenameConvention.test.mjs",
     "test:example-fixtures": "node tests/exampleFixtures.test.mjs",
-    "test": "npm run test:catalog-integrity && npm run test:renderer-smoke && npm run test:filename-convention && npm run test:example-fixtures",
+    "test:public-safety-scan": "node tests/publicSafetyScan.test.mjs",
+    "test": "npm run test:catalog-integrity && npm run test:renderer-smoke && npm run test:filename-convention && npm run test:example-fixtures && npm run test:public-safety-scan",
     "validate": "npm run check:syntax && npm run test"
   },
   "dependencies": {},
