@@ -11,6 +11,7 @@
 - Added `docs/filename-convention.md` documenting the lowercase download-filename convention and a filename-convention test enforcing it.
 - Committed the synthetic-docs-assistant example pack's scenario field values and added a test that regenerates the pack from the current catalog and renderers and asserts a byte-exact match against the committed generated files.
 - Added an automated public-safety pattern scan that checks tracked files for secret-, credential-, and private-endpoint-shaped values, with a documented allow-marker for reviewed false positives.
+- Added repository convention and community files: `.gitattributes` (LF line endings), `.editorconfig`, `CLAUDE.md` (pointing to `AGENTS.md`), `SECURITY.md`, `CODE_OF_CONDUCT.md`, `CODEOWNERS`, and a fourth issue template for engineering and maintenance work.
 
 ### Changed
 
@@ -22,6 +23,8 @@
 ### Fixed
 
 - Replaced the placeholder release-notes URL in the public announcement draft with the actual `v0.1.0` release URL.
+- Broadened `check:syntax` to collect any `.js`, `.mjs`, or `.cjs` file under `src/`, `tests/`, and `examples/`, instead of only `src/**/*.js`, `tests/**/*.test.mjs`, and `examples/**/*.js`.
+- Removed an unreachable `${{ ... }}` allowlist pattern from the public-safety scan's placeholder list: the credential-assignment rule's whitespace guard already exits before that pattern could ever be checked for the conventional (spaced) form, so the entry was dead code.
 
 ## 0.1.0 - 2026-06-17
 

@@ -55,10 +55,17 @@ const PLACEHOLDER_VALUE_PATTERNS = [
   /^https:\/\/example\.invalid(?:\/.*)?$/,
   // Environment-variable interpolation shapes: the value is a reference to
   // be resolved elsewhere (a real secret store, CI runner, or shell env),
-  // not a literal secret committed in place. ${NAME}, ${{ ... }} (GitHub
-  // Actions expressions), and %NAME% (Windows-style) are all safe patterns.
+  // not a literal secret committed in place. ${NAME} and %NAME% (Windows-
+  // style) are safe patterns matched here.
+  //
+  // GitHub Actions ${{ ... }} expressions are deliberately not listed here.
+  // The credential-assignment rule's whitespace guard below
+  // (`if (/\s/.test(value)) continue;`) already exits before this
+  // placeholder check runs for any quoted value containing whitespace - and
+  // `${{ ... }}` conventionally contains internal spaces (e.g.
+  // `token: "${{ secrets.EXAMPLE }}"`). A pattern for that shape here would
+  // be unreachable dead code; the whitespace guard already covers it.
   /^\$\{[A-Za-z_][A-Za-z0-9_]*\}$/,
-  /^\$\{\{[\s\S]*\}\}$/,
   /^%[A-Za-z_][A-Za-z0-9_]*%$/,
 ];
 

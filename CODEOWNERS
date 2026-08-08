@@ -1,0 +1,9 @@
+# Default owners for everything in this repository.
+#
+# This file alone does not require code owner review — GitHub only enforces
+# it when the branch protection rule for `main` has "Require review from
+# Code Owners" enabled. Whether that setting is currently on could not be
+# verified from this change (no authenticated access to the branch
+# protection API); check the repository's branch protection settings before
+# assuming this file changes required-reviewer behavior.
+* @ElvinMorales
