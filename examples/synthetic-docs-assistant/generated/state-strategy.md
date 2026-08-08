@@ -58,6 +58,7 @@ Session-only for this public example.
 - Use synthetic, generic examples only.
 - Do not include secrets, private data, proprietary workflows, regulated data, unsanitized logs, real traces, or production state.
 - Use synthetic state examples only; never include production state snapshots.
+- Runtime templates and configuration examples are okay, but do not publish unsanitized live sessions, traces, logs, private state snapshots, secrets, or workspace snapshots.
 - Public examples may show schemas, field names, and synthetic values only.
 - Live state snapshots and raw runtime data should not be committed publicly unless fully sanitized.
 

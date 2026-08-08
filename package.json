@@ -8,11 +8,12 @@
     "node": ">=22"
   },
   "scripts": {
-    "check:syntax": "node -e \"const fs=require('fs');const path=require('path');const {execSync}=require('child_process');function collect(dir,ext){return fs.readdirSync(dir,{withFileTypes:true}).flatMap(e=>{const p=path.join(dir,e.name);return e.isDirectory()?collect(p,ext):(e.name.endsWith(ext)?[p]:[]);});}const files=[...collect('src','.js'),...collect('tests','.test.mjs')].sort();for(const f of files){console.log('node --check '+f);execSync('node --check '+JSON.stringify(f),{stdio:'inherit'});}\"",
+    "check:syntax": "node -e \"const fs=require('fs');const path=require('path');const {execSync}=require('child_process');function collect(dir,ext){return fs.readdirSync(dir,{withFileTypes:true}).flatMap(e=>{const p=path.join(dir,e.name);return e.isDirectory()?collect(p,ext):(e.name.endsWith(ext)?[p]:[]);});}const files=[...collect('src','.js'),...collect('tests','.test.mjs'),...collect('examples','.js')].sort();for(const f of files){console.log('node --check '+f);execSync('node --check '+JSON.stringify(f),{stdio:'inherit'});}\"",
     "test:catalog-integrity": "node tests/catalogIntegrity.test.mjs",
     "test:renderer-smoke": "node tests/rendererSmoke.test.mjs",
     "test:filename-convention": "node tests/filenameConvention.test.mjs",
-    "test": "npm run test:catalog-integrity && npm run test:renderer-smoke && npm run test:filename-convention",
+    "test:example-fixtures": "node tests/exampleFixtures.test.mjs",
+    "test": "npm run test:catalog-integrity && npm run test:renderer-smoke && npm run test:filename-convention && npm run test:example-fixtures",
     "validate": "npm run check:syntax && npm run test"
   },
   "dependencies": {},
