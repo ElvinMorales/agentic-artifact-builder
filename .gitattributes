@@ -1,0 +1,6 @@
+# Normalize all text files to LF on checkout and in the repository.
+# The tree is already committed as LF-only blobs (core.autocrlf=true on
+# Windows checkouts commits LF, then rewrites the working tree to CRLF on
+# checkout) - this declares that convention explicitly instead of leaving
+# it to each contributor's local git config.
+* text=auto eol=lf

@@ -8,7 +8,7 @@
     "node": ">=22"
   },
   "scripts": {
-    "check:syntax": "node -e \"const fs=require('fs');const path=require('path');const {execSync}=require('child_process');function collect(dir,ext){return fs.readdirSync(dir,{withFileTypes:true}).flatMap(e=>{const p=path.join(dir,e.name);return e.isDirectory()?collect(p,ext):(e.name.endsWith(ext)?[p]:[]);});}const files=[...collect('src','.js'),...collect('tests','.test.mjs'),...collect('examples','.js')].sort();for(const f of files){console.log('node --check '+f);execSync('node --check '+JSON.stringify(f),{stdio:'inherit'});}\"",
+    "check:syntax": "node -e \"const fs=require('fs');const path=require('path');const {execSync}=require('child_process');const JS_EXT=/\\.(js|mjs|cjs)$/;function collect(dir){return fs.readdirSync(dir,{withFileTypes:true}).flatMap(e=>{const p=path.join(dir,e.name);return e.isDirectory()?collect(p):(JS_EXT.test(e.name)?[p]:[]);});}const files=[...collect('src'),...collect('tests'),...collect('examples')].sort();for(const f of files){console.log('node --check '+f);execSync('node --check '+JSON.stringify(f),{stdio:'inherit'});}\"",
     "test:catalog-integrity": "node tests/catalogIntegrity.test.mjs",
     "test:renderer-smoke": "node tests/rendererSmoke.test.mjs",
     "test:filename-convention": "node tests/filenameConvention.test.mjs",
