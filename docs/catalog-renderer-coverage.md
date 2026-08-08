@@ -21,3 +21,4 @@ This table tracks renderer coverage for the current catalog. The generic fallbac
 | `eval-rubric` | Evaluation and observability | `iteration` | Specialized | `eval-rubric.md` | #14 |
 | `runtime-config` | Runtime and deployment | `runtime` | Specialized | `runtime.md` | #14 |
 | `iteration-changelog-note` | Learning and iteration | `iteration` | Specialized | `CHANGELOG.md` | #14 |
+| `public-scaffold-release-package` | Learning and iteration | `iteration` | Specialized | `release-package.md` | #34 |

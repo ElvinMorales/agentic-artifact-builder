@@ -52,6 +52,17 @@ Each artifact entry should include:
 
 Update docs when a catalog change affects product scope, taxonomy alignment, or generated output. Add or update tests when validation or renderer behavior changes.
 
+### When To Bump `artifactCatalogVersion`
+
+`artifactCatalogVersion` (`src/data/artifactCatalog.js`) is a human-readable marker of catalog shape, not a semver contract read by any code. This repository does not follow strict semantic versioning for it. Bump it whenever a change would make someone looking only at the version number wrong about what the catalog currently contains:
+
+- An artifact type is added, removed, or renamed.
+- The set of lifecycle stage or taxonomy bucket values changes.
+- A suggested or download filename changes for an existing artifact.
+- Renderer output changes shape for an existing artifact (fields added, removed, or reordered).
+
+Use your judgment on major vs. minor: reserve a leading-number bump for a taxonomy bucket or lifecycle-stage vocabulary change, and use the second number for everything else (added/removed artifacts, filename or renderer output changes). Do not bump for documentation-only or wording-only changes that do not alter catalog shape or generated output.
+
 ## Adding Examples Safely
 
 Examples should be:
