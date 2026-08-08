@@ -1,4 +1,4 @@
-export const artifactCatalogVersion = "0.1.0";
+export const artifactCatalogVersion = "0.2.0";
 
 export const sourceTaxonomy = {
   repo: "https://github.com/ElvinMorales/agentic-ai-artifact-taxonomy",
