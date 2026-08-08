@@ -6,6 +6,21 @@ This checklist is for public repository review. A private deployment needs its o
 
 For the three lifecycle stages used by the builder, see [artifact-lifecycle.md](artifact-lifecycle.md).
 
+## What's Automated
+
+`npm run validate` (the same command CI runs via `.github/workflows/validate.yml`) includes `tests/publicSafetyScan.test.mjs`, which scans every tracked file for value *shapes* that look like real secrets or private endpoints: AWS-style access key ids, PEM private-key headers, recognizable vendor token prefixes, credential-shaped assignments with a literal non-placeholder value, RFC1918/link-local IP addresses, `.internal`/`.corp`/`.lan`/`.intranet`/`.local`-style hostnames, bare single-label HTTP hosts, and email addresses outside the documented example domains. A reviewed false positive can be suppressed with a `public-safety-scan:allow-line` or `public-safety-scan:allow-next-line` marker, which stays visible in review and is greppable.
+
+This automates the "Secrets And Credentials" and part of the "Private Logs, Traces, Transcripts, And Runtime State" sections below. It cannot check, and still needs human judgment on:
+
+- Whether an example is genuinely synthetic and generic, versus a rewritten real scenario.
+- Proprietary or employer-specific workflows, internal process names, or private architecture that don't take a credential- or hostname-like shape.
+- Regulated data (health, financial, education, government, biometric, location, child-related, legal).
+- Correct taxonomy bucket placement, related-artifact references, and public-safety notes on catalog entries.
+- Tool permissions and side effects that are unsafe in intent but don't match a value-shape rule.
+- Memory/state separation and design-time/runtime/iteration separation.
+
+Run the rest of this checklist manually for everything the scan does not cover.
+
 ## Safe To Publish?
 
 - [ ] The artifact uses synthetic, generic examples only.
