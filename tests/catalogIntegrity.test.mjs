@@ -96,6 +96,9 @@ for (const artifact of artifactCatalog) {
   }
 
   for (const relatedArtifact of artifact.relatedArtifacts) {
+    // Per CONTRIBUTING.md's "relatedArtifacts Direction" policy, relatedArtifacts is
+    // directional guidance, not a symmetric graph - a one-way link is intentional, so
+    // this only checks that the id resolves; it must not require the reverse link.
     if (/^[a-z0-9-]+$/.test(relatedArtifact)) {
       assert.ok(
         validArtifactIds.has(relatedArtifact),

@@ -16,18 +16,35 @@ const currentArtifactIds = new Set(artifactCatalog.map((artifact) => artifact.id
 
 for (const artifact of artifactCatalog) {
   const bucket = bucketsById.get(artifact.bucket);
-  const output = renderArtifactMarkdown(artifact, exampleValues[artifact.id] || {}, bucket);
+
+  assert.ok(
+    Object.hasOwn(exampleValues, artifact.id),
+    `${artifact.id} has no entry in src/examples/exampleValues.js`
+  );
+
+  const values = exampleValues[artifact.id];
+
+  for (const field of artifact.fields) {
+    if (!field.required) {
+      continue;
+    }
+
+    assert.ok(
+      String(values[field.id] || "").trim().length > 0,
+      `${artifact.id}.${field.id} ("${field.label}") is required but has no example value in exampleValues.js`
+    );
+  }
+
+  const output = renderArtifactMarkdown(artifact, values, bucket);
 
   assert.doesNotThrow(
-    () => renderArtifactMarkdown(artifact, exampleValues[artifact.id] || {}, bucket),
+    () => renderArtifactMarkdown(artifact, values, bucket),
     `${artifact.id} should render without throwing`
   );
   assert.ok(output.trim().length > 0, `${artifact.id} output must not be empty`);
-  assert.match(
-    output,
-    /(^#\s|\n##\s|purpose|description|scope|contract|policy|configuration|goal)/i,
-    `${artifact.id} output should include a recognizable title or section`
-  );
+  assertNoEmptyHeadingSections(output, artifact.id);
+  assertSingleTrailingNewline(output, artifact.id);
+  assertRelatedArtifactsSurfaced(output, artifact);
 
   const filename = getDownloadFilename(artifact);
   assert.ok(filename, `${artifact.id} must have a download filename`);
@@ -120,4 +137,72 @@ console.log("renderer smoke checks passed");
 
 function countOccurrences(text, needle) {
   return text.split(needle).length - 1;
+}
+
+// Any "## " heading must be followed by at least one non-blank line before
+// the next heading (of any level) or the end of output. This holds for every
+// renderer today - the ones that emit no "## " headings at all (agent-manifest,
+// tool-spec, resource-manifest, which render YAML) are vacuously fine - and it
+// would catch a future section that loses its content while keeping its title.
+function assertNoEmptyHeadingSections(output, artifactId) {
+  const lines = output.split("\n");
+
+  for (let i = 0; i < lines.length; i++) {
+    if (!/^##\s+\S/.test(lines[i])) {
+      continue;
+    }
+
+    let hasContent = false;
+    for (let j = i + 1; j < lines.length && !/^#{1,6}\s+\S/.test(lines[j]); j++) {
+      if (lines[j].trim().length > 0) {
+        hasContent = true;
+        break;
+      }
+    }
+
+    assert.ok(
+      hasContent,
+      `${artifactId} output has a "${lines[i].trim()}" section with no content beneath it`
+    );
+  }
+}
+
+// Every renderer trims and appends exactly one trailing newline. A byte-compare
+// against the committed example pack would only catch a change from that one
+// fixed baseline; this holds regardless of which scenario values were used.
+function assertSingleTrailingNewline(output, artifactId) {
+  assert.ok(
+    output.endsWith("\n") && !output.endsWith("\n\n"),
+    `${artifactId} output must end with exactly one trailing newline`
+  );
+}
+
+// When a renderer emits a "Related Artifacts" section, every id in the
+// artifact's catalog relatedArtifacts must be listed in it. Renderers that
+// never emit that section (agent-manifest, skill-module, tool-spec,
+// resource-manifest today) are intentionally skipped rather than failed -
+// whether every artifact should surface this section is a separate, tracked
+// concern, not what this check verifies.
+function assertRelatedArtifactsSurfaced(output, artifact) {
+  const lines = output.split("\n");
+  const headingIndex = lines.findIndex((line) => /^##\s+Related Artifacts$/i.test(line.trim()));
+
+  if (headingIndex === -1) {
+    return;
+  }
+
+  const sectionIds = [];
+  for (let j = headingIndex + 1; j < lines.length && !/^#{1,6}\s+\S/.test(lines[j]); j++) {
+    const match = lines[j].match(/^-\s+(.+)$/);
+    if (match) {
+      sectionIds.push(match[1].trim());
+    }
+  }
+
+  for (const relatedId of artifact.relatedArtifacts) {
+    assert.ok(
+      sectionIds.includes(relatedId),
+      `${artifact.id} output's Related Artifacts section is missing "${relatedId}"`
+    );
+  }
 }

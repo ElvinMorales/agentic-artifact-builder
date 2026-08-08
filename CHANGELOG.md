@@ -12,6 +12,8 @@
 - Committed the synthetic-docs-assistant example pack's scenario field values and added a test that regenerates the pack from the current catalog and renderers and asserts a byte-exact match against the committed generated files.
 - Added an automated public-safety pattern scan that checks tracked files for secret-, credential-, and private-endpoint-shaped values, with a documented allow-marker for reviewed false positives.
 - Added repository convention and community files: `.gitattributes` (LF line endings), `.editorconfig`, `CLAUDE.md` (pointing to `AGENTS.md`), `SECURITY.md`, `CODE_OF_CONDUCT.md`, `CODEOWNERS`, and a fourth issue template for engineering and maintenance work.
+- Added required-field coverage checks to `tests/rendererSmoke.test.mjs` and `tests/exampleFixtures.test.mjs`: every catalog artifact must have an entry in `src/examples/exampleValues.js` and `examples/synthetic-docs-assistant/scenario-values.js`, and every `required: true` field must have a non-empty example value in both, naming the artifact and field on failure.
+- Documented the `relatedArtifacts` directionality policy in `CONTRIBUTING.md`: `relatedArtifacts` is directional "read this next" guidance, not a symmetric graph, so one-way links do not need a reciprocal entry.
 
 ### Changed
 
@@ -26,6 +28,7 @@
 - Replaced the placeholder release-notes URL in the public announcement draft with the actual `v0.1.0` release URL.
 - Broadened `check:syntax` to collect any `.js`, `.mjs`, or `.cjs` file under `src/`, `tests/`, and `examples/`, instead of only `src/**/*.js`, `tests/**/*.test.mjs`, and `examples/**/*.js`.
 - Removed an unreachable `${{ ... }}` allowlist pattern from the public-safety scan's placeholder list: the credential-assignment rule's whitespace guard already exits before that pattern could ever be checked for the conventional (spaced) form, so the entry was dead code.
+- Replaced `tests/rendererSmoke.test.mjs`'s central assertion, a regex matching almost any prose (`purpose|description|scope|contract|...`), with invariants that hold for any renderer output: no `## ` heading with no content beneath it, exactly one trailing newline, and every catalog `relatedArtifacts` id present in a rendered "Related Artifacts" section when one is emitted.
 
 ## 0.1.0 - 2026-06-17
 
