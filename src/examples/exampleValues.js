@@ -21,7 +21,8 @@ export const exampleValues = {
   },
   "skill-module": {
     skillName: "Synthetic Workshop Outline Skill",
-    trigger: "Use when a learner needs a reusable workflow for outlining a generic workshop.",
+    capability: "Drafts a timed, public-safe outline for a generic workshop topic.",
+    trigger: "Use when a learner has a workshop topic and audience in mind but no timed structure yet, or needs to compare timebox options before drafting materials.",
     inputs: "Topic\nAudience level\nTimebox\nDesired artifact outputs",
     workflow: "Clarify the learning goal\nDraft a timed outline\nList required public-safe materials\nIdentify follow-up artifacts",
     outputs: "Workshop outline draft\nMaterials checklist\nRelated artifact list\nOpen questions for review",

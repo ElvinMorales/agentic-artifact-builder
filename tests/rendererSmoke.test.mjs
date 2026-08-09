@@ -125,6 +125,45 @@ assert.match(releasePackageText, /## Public-safety review/);
 assert.match(releasePackageText, /## Validation checks/);
 assert.match(releasePackageText, /not a production-readiness certification/i);
 
+// The Agent Skills standard caps SKILL.md frontmatter `description` at 1024
+// characters. Composing it from two free-text fields (capability + trigger) makes
+// overflow more likely than a single field did, so this demonstrates the cap
+// actually firing - not just that it exists in code - and that it lands on a word
+// boundary instead of cutting a word in half.
+const skillModuleArtifact = artifactCatalog.find((artifact) => artifact.id === "skill-module");
+const longWords = Array.from({ length: 400 }, (_, index) => `word${index}`);
+const longCapability = longWords.slice(0, 200).join(" ");
+const longTrigger = longWords.slice(200).join(" ");
+const composedDescription = `${longCapability} ${longTrigger}`;
+
+assert.ok(
+  composedDescription.length > 1024,
+  "test fixture must exceed 1024 characters to actually exercise truncation"
+);
+
+const longSkillOutput = renderArtifactMarkdown(skillModuleArtifact, {
+  ...exampleValues["skill-module"],
+  capability: longCapability,
+  trigger: longTrigger,
+});
+const descriptionMatch = longSkillOutput.match(/^description: (".*")$/m);
+assert.ok(descriptionMatch, "skill-module output must include a frontmatter description line");
+
+const renderedDescription = JSON.parse(descriptionMatch[1]);
+assert.ok(
+  renderedDescription.length <= 1024,
+  "skill-module description must respect the Agent Skills standard's 1024-character limit"
+);
+assert.ok(
+  composedDescription.startsWith(renderedDescription),
+  "capped description must be an exact prefix of the composed capability+trigger text"
+);
+assert.equal(
+  composedDescription[renderedDescription.length],
+  " ",
+  "description must truncate at a word boundary, not mid-word"
+);
+
 for (const artifact of artifactCatalog) {
   assert.equal(
     typeof artifactRenderers[artifact.id],

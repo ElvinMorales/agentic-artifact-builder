@@ -25,6 +25,20 @@ export function slugify(value, fallback = "starter-artifact", maxLength = 64) {
   return slug || fallback;
 }
 
+export function truncateAtWordBoundary(value, maxLength) {
+  const text = String(value || "");
+
+  if (text.length <= maxLength) {
+    return text;
+  }
+
+  const clipped = text.slice(0, maxLength);
+  const lastSpace = clipped.lastIndexOf(" ");
+  const boundary = lastSpace > 0 ? clipped.slice(0, lastSpace) : clipped;
+
+  return boundary.trimEnd();
+}
+
 export function appendList(lines, items = [], fallback = EMPTY_VALUE) {
   const normalized = Array.isArray(items) ? items.filter(Boolean) : splitLines(items);
 
