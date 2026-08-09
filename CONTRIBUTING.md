@@ -64,6 +64,14 @@ Do not add a reciprocal entry just to make a link two-way. `tests/catalogIntegri
 checks only that every `relatedArtifacts` id resolves to a real artifact id - it does not, and
 should not, check that the link is returned.
 
+### Updating The Pinned Taxonomy Reference
+
+`sourceTaxonomy` (`src/data/artifactCatalog.js`) pins an upstream release tag and its commit SHA,
+not a prose version string. See "Updating The Pinned Reference" in
+`docs/taxonomy-alignment.md` for the update procedure, and "Upstream Surface Coverage" in the same
+file for which upstream `templates/` and `schemas/` surfaces this builder currently covers. Update
+the pin from a release tag, never from `main`, and re-check the coverage tables when you do.
+
 ### When To Bump `artifactCatalogVersion`
 
 `artifactCatalogVersion` (`src/data/artifactCatalog.js`) is a human-readable marker of catalog shape, not a semver contract read by any code. This repository does not follow strict semantic versioning for it. Bump it whenever a change would make someone looking only at the version number wrong about what the catalog currently contains:

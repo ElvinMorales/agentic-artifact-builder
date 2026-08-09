@@ -9,7 +9,10 @@ import {
   parseKeyValueLines,
   slugify,
   splitLines,
+  truncateAtWordBoundary,
 } from "./rendererUtils.js";
+
+const SKILL_DESCRIPTION_MAX_LENGTH = 1024;
 
 export const artifactRenderers = {
   "agent-manifest": renderAgentManifest,
@@ -134,18 +137,26 @@ export function getSkillModuleDirectorySlug(values = {}) {
   return slugify(cleanText(values.skillName, "starter-skill"), "starter-skill");
 }
 
+function composeSkillDescription(values) {
+  const capability = cleanText(values.capability, "Reusable public-safe capability module.");
+  const trigger = cleanText(values.trigger, "Use when a generic public-safe capability is needed.");
+
+  return truncateAtWordBoundary(`${capability} ${trigger}`, SKILL_DESCRIPTION_MAX_LENGTH);
+}
+
 function renderSkillModule(artifact, values) {
   const skillName = cleanText(values.skillName, "starter-skill");
   const lines = [
     "---",
     `name: ${JSON.stringify(getSkillModuleDirectorySlug(values))}`,
-    `description: ${JSON.stringify(cleanText(values.trigger, "Reusable public-safe capability module."))}`,
+    `description: ${JSON.stringify(composeSkillDescription(values))}`,
     "---",
     "",
     `# ${skillName}`,
     "",
   ];
 
+  appendMarkdownSection(lines, "What This Skill Does", values.capability);
   appendMarkdownSection(lines, "When To Use", values.trigger);
   appendMarkdownSection(lines, "Required Inputs", splitLines(values.inputs));
   appendMarkdownSection(

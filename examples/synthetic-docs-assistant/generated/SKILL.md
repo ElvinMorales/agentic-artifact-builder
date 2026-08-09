@@ -1,13 +1,17 @@
 ---
 name: "public-safe-documentation-drafting-skill"
-description: "Use when a learner wants to transform synthetic notes into a structured documentation starter artifact."
+description: "Transforms synthetic notes into a structured, taxonomy-aligned documentation starter artifact. Use when a learner has unstructured, public-safe notes and needs a taxonomy-aligned starting point, or is unsure which catalog artifact type fits their content."
 ---
 
 # Public-Safe Documentation Drafting Skill
 
+## What This Skill Does
+
+Transforms synthetic notes into a structured, taxonomy-aligned documentation starter artifact.
+
 ## When To Use
 
-Use when a learner wants to transform synthetic notes into a structured documentation starter artifact.
+Use when a learner has unstructured, public-safe notes and needs a taxonomy-aligned starting point, or is unsure which catalog artifact type fits their content.
 
 ## Required Inputs
 

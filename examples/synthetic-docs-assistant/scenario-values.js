@@ -25,7 +25,8 @@ export const scenarioValues = {
   },
   "skill-module": {
     skillName: "Public-Safe Documentation Drafting Skill",
-    trigger: "Use when a learner wants to transform synthetic notes into a structured documentation starter artifact.",
+    capability: "Transforms synthetic notes into a structured, taxonomy-aligned documentation starter artifact.",
+    trigger: "Use when a learner has unstructured, public-safe notes and needs a taxonomy-aligned starting point, or is unsure which catalog artifact type fits their content.",
     inputs: "Selected artifact id\nSynthetic notes or placeholder requirements\nTarget audience\nPublic-safety constraints",
     workflow: "Confirm the artifact type and canonical bucket\nIdentify required fields and related artifacts\nDraft the starter content with synthetic examples\nCheck for unsafe content and placeholder misuse\nReturn the draft plus review reminders",
     outputs: "Starter documentation artifact\nRelated artifact reminders\nPublic-safety review notes\nOpen questions for private adaptation",

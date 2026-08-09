@@ -1,10 +1,11 @@
-export const artifactCatalogVersion = "0.2.0";
+export const artifactCatalogVersion = "0.3.0";
 
 export const sourceTaxonomy = {
   repo: "https://github.com/ElvinMorales/agentic-ai-artifact-taxonomy",
-  version: "v0.2.0-aligned",
+  tag: "v0.3.0",
+  commit: "4b66f0996734ca57fc214ec3541081c9a9a5b94f",
   notes:
-    "The taxonomy repo is the source of truth. This catalog is an educational builder mapping, not a replacement taxonomy.",
+    "The taxonomy repo is the source of truth. This catalog is an educational builder mapping, not a replacement taxonomy. Pinned to an immutable tag+commit rather than a prose version string so drift requires a deliberate edit; see docs/taxonomy-alignment.md for the update procedure and the surface-coverage map.",
 };
 
 export const taxonomyBuckets = [
@@ -112,7 +113,7 @@ export const artifactCatalog = [
     bucket: "capability-modules",
     name: "Skill module",
     description:
-      "Defines a reusable capability, when it should be used, required inputs, steps, and expected outputs.",
+      "Defines a reusable capability, what it does, when it should be used, required inputs, steps, and expected outputs.",
     lifecycleStage: "design-time",
     exampleFilenames: ["SKILL.md", "skills/research/SKILL.md"],
     learningGoals: [
@@ -122,6 +123,7 @@ export const artifactCatalog = [
     ],
     fields: [
       { id: "skillName", label: "Skill name", type: "text", required: true },
+      { id: "capability", label: "What it does", type: "textarea", required: true },
       { id: "trigger", label: "When to use", type: "textarea", required: true },
       { id: "inputs", label: "Required inputs", type: "list", required: true },
       { id: "workflow", label: "Workflow steps", type: "list", required: true },

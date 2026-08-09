@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import {
   artifactCatalog,
   lifecycleStages,
+  sourceTaxonomy,
   taxonomyBuckets,
 } from "../src/data/artifactCatalog.js";
 import { artifactRenderers } from "../src/renderers/artifactRenderers.js";
@@ -40,6 +41,27 @@ assert.deepEqual(
   lifecycleStages,
   expectedLifecycleStages,
   "lifecycle stages must stay on the documented three-stage learner model"
+);
+
+// sourceTaxonomy must pin an immutable upstream reference (tag + full commit SHA),
+// not a prose "version" string - a prose string cannot be resolved to a specific
+// upstream state and nothing can check it for drift. This runs offline; it does not
+// verify the tag currently resolves to that commit upstream, only that the shape
+// forces a deliberate tag+commit edit rather than a wording change.
+assert.equal(
+  Object.hasOwn(sourceTaxonomy, "version"),
+  false,
+  "sourceTaxonomy must not carry a prose 'version' string in place of a pinned tag+commit"
+);
+assert.match(
+  sourceTaxonomy.tag,
+  /^v\d+\.\d+\.\d+$/,
+  "sourceTaxonomy.tag must be a semver-style tag (e.g. v0.3.0)"
+);
+assert.match(
+  sourceTaxonomy.commit,
+  /^[0-9a-f]{40}$/,
+  "sourceTaxonomy.commit must be a 40-character lowercase hex commit SHA"
 );
 
 const bucketIds = taxonomyBuckets.map((bucket) => bucket.id);
