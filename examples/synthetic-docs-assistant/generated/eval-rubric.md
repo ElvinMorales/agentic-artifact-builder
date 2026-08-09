@@ -48,6 +48,7 @@ Score each criterion from 1 to 3. A score of 1 means missing or unsafe, 2 means 
 
 - Use synthetic, generic examples only.
 - Do not include secrets, private data, proprietary workflows, regulated data, unsanitized logs, real traces, or production state.
+- Do not include real transcripts or incident records.
 
 ## Failure Examples
 

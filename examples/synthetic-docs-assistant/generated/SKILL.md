@@ -32,7 +32,7 @@ Use when a learner wants to transform synthetic notes into a structured document
 
 - Reference only public-safe resources declared in resource-manifest artifacts.
 
-## Guardrails
+## Public-Safety Notes
 
 - Use synthetic, generic examples only.
 - Do not include secrets, private data, proprietary workflows, regulated data, unsanitized logs, real traces, or production state.

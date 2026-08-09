@@ -33,6 +33,21 @@ example, agent runtime refusal behavior at generation time) rather than repeat p
 hygiene the catalog notes already cover. When in doubt, remove the hardcoded restatement and
 let the catalog-driven section carry it.
 
+The standard heading for this section is `Public-Safety Notes` in Markdown renderers and
+`public_safety_notes` as the field name in YAML renderers. Use the standard form unless the
+artifact's notes genuinely need a different frame. Three renderers deviate deliberately:
+
+- `memory-policy` uses `Privacy And Public-Safety Constraints`, because memory policy pairs
+  privacy of remembered content with general publishing safety.
+- `eval-rubric` uses `Public-Safety Checks`, matching the rubric's other `*-Checks` sections
+  (Must-Pass Checks, Regression Checks).
+- `public-scaffold-release-package` inlines `artifact.publicSafetyNotes` into its existing
+  `Public-safety review` section alongside user-authored review points, rather than adding a
+  second, separate notes section.
+
+Any other renderer using a non-standard heading or field name is drift, not a considered
+choice — rename it to the standard form rather than treating the variation as intentional.
+
 ## Safe To Publish?
 
 - [ ] The artifact uses synthetic, generic examples only.

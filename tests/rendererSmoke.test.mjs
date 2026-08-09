@@ -104,12 +104,12 @@ assert.equal(
 
 const evalRubricArtifact = artifactCatalog.find((artifact) => artifact.id === "eval-rubric");
 const evalRubricText = renderArtifactMarkdown(evalRubricArtifact, exampleValues["eval-rubric"]);
-const warning = "Do not include real traces, logs, transcripts, or incident records.";
+const warning = "Do not include real transcripts or incident records.";
 assert.ok(evalRubricArtifact.publicSafetyNotes.includes(warning), "catalog should retain the eval warning");
 assert.equal(
   countOccurrences(evalRubricText, warning),
-  0,
-  "eval rubric renderer should not duplicate the trace/log warning in Public-Safety Checks"
+  1,
+  "eval rubric renderer should surface the transcript/incident warning exactly once in Public-Safety Checks"
 );
 
 const releasePackageArtifact = artifactCatalog.find(

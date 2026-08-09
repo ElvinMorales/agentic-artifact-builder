@@ -23,7 +23,7 @@ tools:
       - "Unknown artifact id"
       - "No matching public template"
       - "Template metadata lacks safety notes"
-    safety_notes:
+    public_safety_notes:
       - "Use synthetic, generic examples only."
       - "Do not include secrets, private data, proprietary workflows, regulated data, unsanitized logs, real traces, or production state."
       - "Use placeholder endpoints and synthetic parameter examples."

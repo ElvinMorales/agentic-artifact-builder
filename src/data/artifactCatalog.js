@@ -408,7 +408,7 @@ export const artifactCatalog = [
     ],
     publicSafetyNotes: [
       ...commonSafetyNotes,
-      "Do not include real traces, logs, transcripts, or incident records.",
+      "Do not include real transcripts or incident records.",
     ],
     relatedArtifacts: ["output-schema", "guardrails-governance-policy", "iteration-changelog-note"],
   },
