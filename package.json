@@ -15,7 +15,8 @@
     "test:example-fixtures": "node tests/exampleFixtures.test.mjs",
     "test:public-safety-scan": "node tests/publicSafetyScan.test.mjs",
     "test:catalog-renderer-coverage": "node tests/catalogRendererCoverage.test.mjs",
-    "test": "npm run test:catalog-integrity && npm run test:renderer-smoke && npm run test:filename-convention && npm run test:example-fixtures && npm run test:public-safety-scan && npm run test:catalog-renderer-coverage",
+    "test:app-state-behavior": "node tests/appStateBehavior.test.mjs",
+    "test": "npm run test:catalog-integrity && npm run test:renderer-smoke && npm run test:filename-convention && npm run test:example-fixtures && npm run test:public-safety-scan && npm run test:catalog-renderer-coverage && npm run test:app-state-behavior",
     "validate": "npm run check:syntax && npm run test"
   },
   "dependencies": {},

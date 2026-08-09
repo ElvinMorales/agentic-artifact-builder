@@ -3,8 +3,7 @@ import {
   sourceTaxonomy,
   taxonomyBuckets,
 } from "./data/artifactCatalog.js";
-import { exampleValues } from "./examples/exampleValues.js";
-import { getSkillModuleDirectorySlug } from "./renderers/artifactRenderers.js";
+import { createAppState, getDownloadStatusMessage } from "./appState.js";
 import {
   getDownloadContentType,
   getDownloadFilename,
@@ -23,8 +22,7 @@ const downloadButton = document.querySelector("#download-markdown");
 
 const artifactById = new Map(artifactCatalog.map((artifact) => [artifact.id, artifact]));
 const bucketById = new Map(taxonomyBuckets.map((bucket) => [bucket.id, bucket]));
-const fieldValuesByArtifact = new Map();
-let selectedArtifactId = artifactCatalog[0]?.id;
+const appState = createAppState(artifactCatalog);
 let statusTimer;
 
 const lifecycleStageDetails = {
@@ -55,7 +53,7 @@ pickerElement.addEventListener("click", (event) => {
     return;
   }
 
-  selectedArtifactId = button.dataset.artifactId;
+  appState.selectArtifact(button.dataset.artifactId);
   renderApp();
 });
 
@@ -65,24 +63,19 @@ formElement.addEventListener("input", (event) => {
     return;
   }
 
-  const values = getCurrentValues();
+  const values = appState.getCurrentValues();
   values[field.dataset.fieldId] = field.value;
   renderPreview();
 });
 
 loadExampleButton.addEventListener("click", () => {
-  const artifact = getSelectedArtifact();
-  fieldValuesByArtifact.set(artifact.id, {
-    ...createEmptyValues(artifact),
-    ...(exampleValues[artifact.id] || createGenericExampleValues(artifact)),
-  });
+  appState.loadExample();
   renderBuilder();
   showStatus("Synthetic example loaded.");
 });
 
 resetButton.addEventListener("click", () => {
-  const artifact = getSelectedArtifact();
-  fieldValuesByArtifact.set(artifact.id, createEmptyValues(artifact));
+  appState.resetCurrent();
   renderBuilder();
   showStatus("Current form reset.");
 });
@@ -97,7 +90,7 @@ copyButton.addEventListener("click", async () => {
 });
 
 downloadButton.addEventListener("click", () => {
-  const artifact = getSelectedArtifact();
+  const artifact = appState.getSelectedArtifact();
   const filename = getDownloadFilename(artifact);
   const blob = new Blob([previewElement.value], { type: getDownloadContentType(filename) });
   const url = URL.createObjectURL(blob);
@@ -109,7 +102,7 @@ downloadButton.addEventListener("click", () => {
   link.click();
   link.remove();
   URL.revokeObjectURL(url);
-  showStatus(getDownloadStatusMessage(artifact, filename));
+  showStatus(getDownloadStatusMessage(artifact, filename, appState.getCurrentValues()));
 });
 
 function renderApp() {
@@ -120,6 +113,7 @@ function renderApp() {
 
 function renderPicker() {
   pickerElement.innerHTML = "";
+  const selectedArtifactId = appState.getSelectedArtifact().id;
 
   taxonomyBuckets.forEach((bucket) => {
     const artifacts = artifactCatalog.filter((artifact) => artifact.bucket === bucket.id);
@@ -154,7 +148,7 @@ function renderPicker() {
 }
 
 function renderLearningPanel() {
-  const artifact = getSelectedArtifact();
+  const artifact = appState.getSelectedArtifact();
   const bucket = bucketById.get(artifact.bucket);
   const related = artifact.relatedArtifacts.map((id) => artifactById.get(id)?.name || id);
 
@@ -176,8 +170,8 @@ function renderLearningPanel() {
 }
 
 function renderBuilder() {
-  const artifact = getSelectedArtifact();
-  const values = getCurrentValues();
+  const artifact = appState.getSelectedArtifact();
+  const values = appState.getCurrentValues();
 
   formElement.innerHTML = "";
 
@@ -212,9 +206,9 @@ function renderBuilder() {
 }
 
 function renderPreview() {
-  const artifact = getSelectedArtifact();
+  const artifact = appState.getSelectedArtifact();
   const bucket = bucketById.get(artifact.bucket);
-  previewElement.value = renderMarkdownArtifact(artifact, bucket, getCurrentValues());
+  previewElement.value = renderMarkdownArtifact(artifact, bucket, appState.getCurrentValues());
 }
 
 function createFieldControl(field, fieldId, value) {
@@ -316,37 +310,6 @@ function getLifecycleStageLabel(stage) {
   return lifecycleStageDetails[stage]?.label || stage;
 }
 
-function getCurrentValues() {
-  const artifact = getSelectedArtifact();
-
-  if (!fieldValuesByArtifact.has(artifact.id)) {
-    fieldValuesByArtifact.set(artifact.id, createEmptyValues(artifact));
-  }
-
-  return fieldValuesByArtifact.get(artifact.id);
-}
-
-function createEmptyValues(artifact) {
-  return Object.fromEntries(artifact.fields.map((field) => [field.id, ""]));
-}
-
-function createGenericExampleValues(artifact) {
-  return Object.fromEntries(
-    artifact.fields.map((field) => [
-      field.id,
-      field.type === "list"
-        ? "Synthetic example item\nAnother generic example item"
-        : field.type === "key-value-list"
-          ? "exampleKey: Generic example value\nsecondKey: Another example value"
-          : `Synthetic ${field.label.toLowerCase()} example`,
-    ])
-  );
-}
-
-function getSelectedArtifact() {
-  return artifactById.get(selectedArtifactId) || artifactCatalog[0];
-}
-
 function getFieldHelp(field) {
   if (field.type === "list") {
     return "Enter one item per line.";
@@ -376,15 +339,6 @@ function getSelectOptions(field) {
   };
 
   return optionsByFieldId[field.id] || [];
-}
-
-function getDownloadStatusMessage(artifact, filename) {
-  if (artifact.id === "skill-module") {
-    const slug = getSkillModuleDirectorySlug(getCurrentValues());
-    return `${filename} downloaded — place it at ${slug}/SKILL.md.`;
-  }
-
-  return `${filename} downloaded.`;
 }
 
 async function copyText(text) {
