@@ -53,14 +53,12 @@ Session-only for this public example.
 - Do not treat an interrupted action as approved after resume.
 - Retry only from a documented safe checkpoint and preserve visible status for review.
 
-## Public Repo Posture
+## Public-Safety Notes
 
 - Use synthetic, generic examples only.
 - Do not include secrets, private data, proprietary workflows, regulated data, unsanitized logs, real traces, or production state.
 - Use synthetic state examples only; never include production state snapshots.
 - Runtime templates and configuration examples are okay, but do not publish unsanitized live sessions, traces, logs, private state snapshots, secrets, or workspace snapshots.
-- Public examples may show schemas, field names, and synthetic values only.
-- Live state snapshots and raw runtime data should not be committed publicly unless fully sanitized.
 
 ## Related Artifacts
 

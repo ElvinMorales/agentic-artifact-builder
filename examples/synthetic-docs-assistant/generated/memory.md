@@ -59,7 +59,6 @@ Retain only until the learner clears preferences or resets the example workspace
 - Use synthetic, generic examples only.
 - Do not include secrets, private data, proprietary workflows, regulated data, unsanitized logs, real traces, or production state.
 - Do not include real user memory, personal data, or live memory store contents.
-- Do not generate real memory entries, live memory store exports, personal data, credentials, or private examples.
 - Use this file as a policy starter, not as evidence that a production memory system is safe.
 
 ## Related Artifacts

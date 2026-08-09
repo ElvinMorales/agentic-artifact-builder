@@ -157,7 +157,7 @@ function renderSkillModule(artifact, values) {
   );
   appendMarkdownSection(lines, "Tools Used", ["Reference only tools declared in tool-spec artifacts such as tools.yaml."]);
   appendMarkdownSection(lines, "Resources Used", ["Reference only public-safe resources declared in resource-manifest artifacts."]);
-  appendMarkdownSection(lines, "Guardrails", artifact.publicSafetyNotes);
+  appendMarkdownSection(lines, "Public-Safety Notes", artifact.publicSafetyNotes);
   appendMarkdownSection(lines, "Output Contract", splitLines(values.outputs));
   appendMarkdownSection(lines, "Failure Modes", [
     "Required inputs are missing or unclear.",
@@ -186,7 +186,7 @@ function renderToolSpec(artifact, values) {
   appendYamlList(lines, "permissions", values.permissions, 4);
   appendYamlScalar(lines, "approval_required", "Required before adding network, filesystem, account, or irreversible side effects.", 4);
   appendYamlList(lines, "failure_modes", values.failureModes, 4);
-  appendYamlList(lines, "safety_notes", artifact.publicSafetyNotes, 4);
+  appendYamlList(lines, "public_safety_notes", artifact.publicSafetyNotes, 4);
 
   return finish(lines);
 }
@@ -296,7 +296,6 @@ function renderMemoryPolicy(artifact, values) {
   appendMarkdownSection(lines, "Deletion And Correction Rules", splitLines(values.userControls));
   appendMarkdownSection(lines, "Privacy And Public-Safety Constraints", [
     ...artifact.publicSafetyNotes,
-    "Do not generate real memory entries, live memory store exports, personal data, credentials, or private examples.",
     "Use this file as a policy starter, not as evidence that a production memory system is safe.",
   ]);
   appendMarkdownSection(lines, "Related Artifacts", artifact.relatedArtifacts);
@@ -338,11 +337,7 @@ function renderStateStrategy(artifact, values) {
     "Do not treat an interrupted action as approved after resume.",
     "Retry only from a documented safe checkpoint and preserve visible status for review.",
   ]);
-  appendMarkdownSection(lines, "Public Repo Posture", [
-    ...artifact.publicSafetyNotes,
-    "Public examples may show schemas, field names, and synthetic values only.",
-    "Live state snapshots and raw runtime data should not be committed publicly unless fully sanitized.",
-  ]);
+  appendMarkdownSection(lines, "Public-Safety Notes", artifact.publicSafetyNotes);
   appendMarkdownSection(lines, "Related Artifacts", artifact.relatedArtifacts);
 
   return finish(lines);
@@ -549,9 +544,7 @@ function renderEvalRubric(artifact, values) {
     "The generic fallback still renders unexpected future artifact ids.",
     "Copy, download, reset, load-example, form editing, and live preview behavior continue to work.",
   ]);
-  appendMarkdownSection(lines, "Public-Safety Checks", [
-    ...artifact.publicSafetyNotes.filter((note) => !note.startsWith("Do not include real traces")),
-  ]);
+  appendMarkdownSection(lines, "Public-Safety Checks", artifact.publicSafetyNotes);
   appendMarkdownSection(lines, "Failure Examples", [
     "The output invents a new top-level taxonomy bucket.",
     "A state artifact is described as long-term memory.",
